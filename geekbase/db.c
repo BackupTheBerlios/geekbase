@@ -212,7 +212,7 @@ parse_field(FILE *stream)
 {
 	field *tmp;
 	char *name, *type;
-	field_type ty;
+	fieldtype ty;
 
 	assert(stream);
 

@@ -6,7 +6,7 @@
 
 typedef struct {
 	char *name;            /**<  */
-	field_type type;       /**<  */
+	fieldtype type;       /**<  */
 	struct table *parent;  /**<  */
 } field;
 
@@ -16,7 +16,7 @@ typedef struct {
  * @param type Field type
  * @return A pointer to the field just created
  **/
-field *field_create(char *name, field_type type);
+field *field_create(char *name, fieldtype type);
 
 /**
  * @brief Frees a field.

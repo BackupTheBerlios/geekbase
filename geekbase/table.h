@@ -12,7 +12,7 @@ typedef union {
 } value;
 
 typedef struct {
-	field_type type;
+	fieldtype type;
 	value val;
 } cell;
 

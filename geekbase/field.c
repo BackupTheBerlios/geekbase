@@ -5,7 +5,7 @@
 #include "g_limits.h"
 
 field*
-field_create(char *name, field_type type)
+field_create(char *name, fieldtype type)
 {
 	field *temp;
       

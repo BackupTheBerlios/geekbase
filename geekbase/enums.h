@@ -6,7 +6,7 @@ typedef enum {
 	TYPE_INT,       /**< field is an integers collector */
 	TYPE_STRING,    /**< field is a strings collector */
 	TYPE_TIMESTAMP  /**< field is a timestamp (xx:yy:zz) collector */
-} field_type;
+} fieldtype;
 
 typedef enum {
 	TYPE_DISK  /**<  */
