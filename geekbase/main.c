@@ -25,7 +25,7 @@ int main()
 	int i=0;
 
 	
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	if(db_open(".")) {
                 g_error("db_open");
                 return 1;
