@@ -10,7 +10,7 @@ CFLAGS    = -D_GNU_SOURCE -DDEBUG
 ifndef NODEBUG
 CFLAGS += $(CDEBUG) $(WARN)
 endif
-LDFLAGS   = -shared -fPIC
+LDFLAGS   = -shared -fPIC -lncurses
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
