@@ -1,8 +1,10 @@
+#include <string.h>
+
 #include "window.h"
 #include "g_error.h"
 
 LPR_WINDOW*
-window_create(char *title, int sizey, int sizex, int id) 
+window_create(const char *title, int sizey, int sizex, int id) 
 {
 	LPR_WINDOW *win;
 
@@ -20,7 +22,7 @@ window_create(char *title, int sizey, int sizex, int id)
 
 	win->body=new_panel(newwin(sizey, sizex,(LINES-sizey)/2, 
 				   (COLS-sizex)/2));
-	win->title=title;
+	win->title=strdup(title);
 	win->id=id;
 
 	box(win->body->win, 0, 0);
@@ -35,7 +37,7 @@ window_create(char *title, int sizey, int sizex, int id)
 	return win;
 }
 
-void 
+void
 window_free(LPR_WINDOW *win)
 {
 	assert(win);
@@ -239,7 +241,7 @@ wvisualtab_create(void)
 }
 
 LPR_WINDOW*
-wcerca_create(char *title,char *desc, int formsize, int id) 
+wcerca_create(const char *title, const char *desc, int formsize, int id) 
 {
 	LPR_WINDOW *win;
    	FIELD *field[2];   

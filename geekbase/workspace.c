@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "workspace.h"
 #include "g_error.h"
 
