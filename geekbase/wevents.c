@@ -351,12 +351,12 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 	
 	switch(key) {
 	case KEY_UP:		
-		if(curwin->form->current == curwin->field[1])
+		if(curwin->form->current == curwin->field[2])
 			form_driver(curwin->form, REQ_LEFT_FIELD);
 		else form_driver(curwin->form, REQ_UP_FIELD);
 		break;
 	case KEY_DOWN:
-		if(curwin->form->current == curwin->field[1]){
+		if(curwin->form->current == curwin->field[2]){
 			form_driver(curwin->form, REQ_RIGHT_FIELD);
 		}
 		else {
@@ -382,5 +382,7 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 		if(curwin->form->current != curwin->field[6])
 			break;
 	}
+	
+	return g_event;
 }
 
