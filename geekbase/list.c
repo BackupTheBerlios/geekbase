@@ -21,14 +21,15 @@ list_new(unsigned elem_size)
 list*
 list_free(list *l)
 {
-	elem *tmp;
+	elem *tmp, *dead;
 
 	assert(l);
 
 	tmp = l->head;
 	while(tmp != NULL) {
-		free(tmp->buf);
-		free(tmp);
+		dead = tmp;
+		free(dead->buf);
+		free(dead);
 		tmp = tmp->next;
 	}
 
@@ -53,7 +54,7 @@ list_ins_node(list *l, int loc, void *node)
 		l->head = new;
 	} else {
 		tmp = l->head;
-		while(tmp->next->loc < loc)
+		while(tmp->next != NULL && tmp->next->loc < loc)
 			tmp = tmp->next;
 
 		XMALLOC(new, sizeof(elem), NULL);
@@ -63,7 +64,7 @@ list_ins_node(list *l, int loc, void *node)
 		new->next = tmp->next;
 		tmp->next = new;
 
-		if(new->loc == new->next->loc) {
+		if(new->next != NULL && new->loc == new->next->loc) {
 			tmp = new->next;
 			while(tmp->next != NULL) {
 				tmp->loc++;
@@ -76,9 +77,60 @@ list_ins_node(list *l, int loc, void *node)
 }
 
 list*
+list_append(list *l, int loc, void *node)
+{
+	elem *last, *new;
+
+	assert(l);
+
+	if(l->head == NULL) {
+		XMALLOC(new, sizeof(elem), NULL);
+		new->loc = loc;
+		XMALLOC(new->buf, l->elem_size, NULL);
+		memcpy(new->buf, node, l->elem_size);
+		new->next = NULL;
+		l->head = new;
+	} else {
+		last = l->head;
+		while(last->next != NULL)
+			last = last->next;
+		XMALLOC(new, sizeof(elem), NULL);
+		new->loc = loc > last->loc ? loc : last->loc + 1;
+		XMALLOC(new->buf, l->elem_size, NULL);
+		memcpy(new->buf, node, l->elem_size);
+		new->next = NULL;
+		last->next = new;
+	}
+
+	return l;
+}
+
+list*
 list_del_node(list *l, int loc)
 {
+	elem *cur, *prev;
+
 	assert(l);
+
+	if(l->head == NULL)
+		return l;
+	else {
+		prev = l->head;
+		if(prev->loc == loc) {
+			l->head = prev->next;
+			free(prev);
+			return l;
+		}
+		cur = prev->next;
+		while(cur != NULL && cur->loc != loc) {
+			prev = cur;
+			cur = cur->next;
+		}
+		if(cur) {
+			prev->next = cur->next;
+			free(cur);
+		}
+	}
 
 	return l;
 }
@@ -98,4 +150,21 @@ list_search(list *l, int loc)
 	}
 
 	return NULL;
+}
+
+int
+list_count_nodes(list *l)
+{
+	elem *tmp;
+	int count=0;
+
+	assert(l);
+
+	tmp = l->head;
+	while(tmp) {
+		++count;
+		tmp = tmp->next;
+	}
+
+	return count;
 }

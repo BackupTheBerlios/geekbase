@@ -17,7 +17,9 @@ typedef struct {
 list *list_new(unsigned elem_size);
 list *list_free(list *l);
 list *list_ins_node(list *l, int loc, void *node);
+list *list_append(list *l, int loc, void *node);
 list *list_del_node(list *l, int loc);
 void *list_search(list *l, int loc);
+int list_count_nodes(list *l);
 
 #endif /* LIST_H */

@@ -68,6 +68,7 @@ table_load(const char *name)
 	int fieldnum;
 	int ret, i;
 	field *tmpf;
+	list *flist;
 
 	assert(name);
 	assert(strnlen(name, MAX_TABNAME_LEN+1) < MAX_TABNAME_LEN);
@@ -100,14 +101,22 @@ table_load(const char *name)
 			return NULL;
 		}
 
+		flist = list_new(sizeof(field));
 		/* getting field definitions */
 		for(i = 0; i < fieldnum; i++) {
 			tmpf = parse_field(file);
 			if(!tmpf) {
 				free(tab);
+				list_free(flist);
 				return NULL;
+			} else {
+				list_append(flist, i, tmpf);
 			}
 		}
+		tab->fields = flist;
+
+		/* @todo parse records */
+
 		XMALLOC(tab->name, strlen(name), NULL);
 		strcpy(tab->name, name);
 
@@ -158,19 +167,32 @@ parse_field(FILE *stream)
 static char*
 g_fgets(char *s, int size, FILE *stream)
 {
-	int c, count = -1;
+	int c, offset = -1;
 
 	if (size == 0)
 		return s;
 
-	while(++count < size) {
+	/* eat whitespaces and newlines */
+	while(1) {
+		c = fgetc(stream);
+		if(c == EOF) {
+			s[0] = '\0';
+			return s;
+		} else if(!isspace(c)) {
+			++offset;
+			s[offset] = c;
+			break;
+		}
+	}
+
+	while(++offset < size) {
 		c = fgetc(stream);
 		if (c == EOF || isspace(c))
 			break;
 		else
-			s[count] = c;
+			s[offset] = c;
 	}
-	s[count] = '\0';
+	s[offset] = '\0';
 
 	return s;
 }
