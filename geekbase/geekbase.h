@@ -4,11 +4,12 @@
 #ifndef GEEKBASE_H
 #define GEEKBASE_H
 
+#include "g_error.h"
 #include "enums.h"
 #include "table.h"
 
 typedef struct {
-	char *name;          /**< path to database pool */
+	char *location;      /**< path to database pool */
 	enum env_type type;  /**< enviroment type */
 } env;
 

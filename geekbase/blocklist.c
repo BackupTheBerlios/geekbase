@@ -1,9 +1,9 @@
 #include "block.h"
 #include "blocklist.h"
 #include "utils.h"
-#include "errors.h"
+#include "g_error.h"
 
-extern unsigned geek_errno;
+extern unsigned g_errno;
 
 blocklist*
 blocklist_new(unsigned block_size, unsigned member_size)

@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "enums.h"
-#include "errors.h"
+#include "g_error.h"
 
 typedef struct {
 	char *name;             /**<  */

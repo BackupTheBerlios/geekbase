@@ -3,9 +3,9 @@
 #include "buffer.h"
 #include "block.h"
 #include "utils.h"
-#include "errors.h"
+#include "g_error.h"
 
-extern unsigned geek_errno;
+extern unsigned g_errno;
 
 block *block_new(unsigned member_size, unsigned size)
 {

@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 #include "buffer.h"
-#include "errors.h"
+#include "g_error.h"
 #include "utils.h"
 
-extern unsigned geek_errno;
+extern unsigned g_errno;
 
 buffer*
 buffer_new (unsigned member_size, unsigned size)
@@ -73,7 +73,7 @@ buffer_get(buffer *buff, unsigned index)
 	assert(buff && buff->used <= buff->size);
 
 	if (index >= buff->used) {
-		geek_errno = ERR_ARRAY_OUT_OF_BOUNDS;
+		g_errno = ERR_ARRAY_OUT_OF_BOUNDS;
 		return NULL;
 	}
 

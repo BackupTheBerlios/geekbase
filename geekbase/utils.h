@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "errors.h"
+#include "g_error.h"
 
 /**
  * @brief Simplifies memory allocation
@@ -9,7 +9,7 @@
 #define XMALLOC(ptr, size, retval) \
 	ptr = malloc(size); \
 	if (ptr == NULL) { \
-		geek_errno = ERR_NOMEM;	\
+		g_errno = ERR_NOMEM;	\
 		return retval; \
 	}
 
