@@ -71,6 +71,7 @@ table_exists(const char *name)
 {
 	char *fullname;
 	struct stat st;
+	bool exists;
 
 	fullname = strdup(dbase->location);
 	fullname = strcat(fullname, "/");
@@ -78,9 +79,13 @@ table_exists(const char *name)
 	fullname = strcat(fullname, ".gb");
 
 	if(stat(fullname, &st) == 0)
-		return true;
+		exists = true;
 	else
-		return false;
+		exists = false;
+
+	free(fullname);
+
+	return exists;
 }
 
 /* @todo da implementare */

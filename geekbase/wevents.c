@@ -277,7 +277,7 @@ day(char *buf)
 		"venerdi  "
 	};
 
-	day=strndup(buf, 9);
+	day=strndup(buf, 10);
      
 	
 	while(day_n != 0 && i<5)

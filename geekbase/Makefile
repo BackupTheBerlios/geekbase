@@ -4,7 +4,7 @@ WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings \
             -Waggregate-return -Winline -W -Wno-unused -Wsign-compare \
             -Wformat -Wformat-nonliteral -Wformat-security -Wpacked \
-            -Wswitch -Wpadded -Wdisabled-optimization -Wno-shadow \
+            -Wswitch -Wdisabled-optimization -Wno-shadow \
             -mno-accumulate-outgoing-args -ansi -pedantic -mpreferred-stack-boundary=2
 CFLAGS    = -D_GNU_SOURCE
 ifndef NDEBUG
