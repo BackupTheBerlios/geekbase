@@ -5,10 +5,10 @@
 #include "g_error.h"
 
 typedef struct {
-	char *name;             /**<  */
-	enum field_type type;   /**<  */
-	short unsigned lenght;  /**<  */
-	struct table *parent;   /**<  */
+	char *name;                  /**<  */
+	enum field_type type;        /**<  */
+	short unsigned lenght;       /**<  */
+	const struct table *parent;  /**<  */
 } field;
 
 /**

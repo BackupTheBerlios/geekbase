@@ -1,19 +1,23 @@
+#include <string.h>
+
+#define _IMPL_
+
 #include "table.h"
+#include "g_error.h"
+#include "utils.h"
 
-int
-table_create (char *name, table *tab)
+table*
+table_create (char *name)
 {
-	if ( !name )
-		return 1;
+	table *tab;
 
-	if ( !tab ) {
-		XMALLOC(tab, sizeof(table), 1);
-	}
+	assert(name);
 
-	tab->name = malloc(strlen(name));
+	XMALLOC(tab, sizeof(table), NULL);
+	XMALLOC(tab->name, strlen(name), NULL);
 	strcpy(tab->name, name);
 	tab->parent = NULL;
 
-	return 0;
+	return tab;
 }
 

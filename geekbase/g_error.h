@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#ifndef ERRORS_H
-#define ERRORS_H
+#ifndef G_ERROR_H
+#define G_ERROR_H
 
 extern unsigned g_errno;
 
@@ -14,4 +14,4 @@ typedef enum {
 
 void g_error(const char *msg);
 
-#endif /* ERRORS_H */
+#endif /* G_ERROR_H */

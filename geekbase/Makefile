@@ -12,7 +12,7 @@ LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
-LIB_SOURCES   = buffer.c g_error.c block.c blocklist.c field.c
+LIB_SOURCES   = block.c blocklist.c buffer.c cell.c db.c field.c g_error.c table.c
 LIB_OBJS      = $(LIB_SOURCES:.c=.o)
 
 EXEC          = geekbase

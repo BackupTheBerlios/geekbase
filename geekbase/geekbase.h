@@ -4,20 +4,9 @@
 #ifndef GEEKBASE_H
 #define GEEKBASE_H
 
-#include "g_error.h"
 #include "enums.h"
+#include "g_error.h"
+#include "db.h"
 #include "table.h"
-
-typedef struct {
-	char *location;      /**< path to database pool */
-	enum env_type type;  /**< enviroment type */
-} env;
-
-typedef struct {
-	char *name;             /**<  */
-	short unsigned ntable;  /**<  */
-	struct env *parent;     /**<  */
-	struct table **table;   /**<  */
-} db;
 
 #endif /* GEEKBASE_H */
