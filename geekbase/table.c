@@ -24,7 +24,14 @@ table_open(const char *name)
 	}
 }
 
-/* @todo da implamentare */
+/* @todo da implementare */
+int
+table_close(const table *tab)
+{
+	return 0;
+}
+
+/* @todo da implementare */
 int
 table_delete(const table *tab)
 {

@@ -6,7 +6,7 @@ WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Wformat -Wformat-nonliteral -Wformat-security -Wpacked \
             -Wswitch -Wpadded -Wdisabled-optimization -Wno-shadow \
             -mno-accumulate-outgoing-args -ansi -pedantic
-CFLAGS    = -D_GNU_SOURCE
+CFLAGS    = -D_GNU_SOURCE -DDEBUG
 ifndef NODEBUG
 CFLAGS += $(CDEBUG) $(WARN)
 endif
@@ -14,7 +14,7 @@ LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
-LIB_SOURCES   = block.c blocklist.c buffer.c cell.c db.c field.c g_error.c \
+LIB_SOURCES   = block.c blocklist.c buffer.c db.c field.c g_error.c \
 		g_limits.c list.c table.c
 LIB_OBJS      = $(LIB_SOURCES:.c=.o)
 
@@ -22,8 +22,8 @@ EXEC          = geekbase
 EXEC_SOURCES  = main.c
 EXEC_OBJS     = $(EXEC_SOURCES:.c=.o)
 
-TEST          = test
-TEST_SOURCES  = test.c
+TEST          = g_test
+TEST_SOURCES  = g_test.c
 TEST_OBJS     = $(TEST_SOURCES:.c=.o)
 
 SOURCES       = $(LIB_SOURCES) $(EXEC_SOURCES) $(TEST_SOURCES)
@@ -45,7 +45,7 @@ $(LIB): $(LIB_OBJS)
 	ln -sf $@ $(basename $@)
 
 test: $(LIB) $(TEST_OBJS)
-	$(CC) -L. -l$(LIBNAME) $(TEST_OBJS) -o $@
+	$(CC) -L. -l$(LIBNAME) $(TEST_OBJS) -o g_test
 
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 .%.d: %.c

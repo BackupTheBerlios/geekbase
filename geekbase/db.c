@@ -13,39 +13,40 @@
 static db *dbase = NULL;
 
 static field *parse_field(FILE *fin);
+static record *parse_record(FILE *fin, list *fields);
+static void eat_spaces(FILE *stream);
+static char *chomp(char *s);
 static char *g_fgets(char *s, int size, FILE *stream);
 
-/** @todo finirla */
-int db_open(const char *location)
+int
+db_open(const char *location)
 {
-	DIR *dbdir;
-
 	assert(location);
 	/* env_init can be called only once */
 	assert(!db_is_open());
 
 	XMALLOC(dbase, sizeof(dbase), -1);
 
-	strcpy(dbase->location, location);
-	dbdir = opendir(location);
-	if (!dbdir) {
+	dbase->location = strdup(location);
+	dbase->dir = opendir(location);
+	if (!dbase->dir) {
 		g_errno = ERR_WRONG_LOCATION;
 		return -1;
-	} else {
-		dbase->dir = dbdir;
 	}
 
 	dbase->type = TYPE_DISK;
-	dbase->ntable = 0;
-	dbase->open_tables = NULL;
+	dbase->open_tables = list_new(sizeof(table));
 
 	return 0;
 }
 
-/** @todo da finire */
-int db_close(void)
+int
+db_close(void)
 {
 	if(db_is_open()) {
+/* 		free(dbase->location); */
+		free(dbase->dir);
+		list_free(dbase->open_tables);
 		free(dbase);
 	}
 	dbase = NULL;
@@ -53,7 +54,8 @@ int db_close(void)
 	return 0;
 }
 
-bool db_is_open(void)
+bool
+db_is_open(void)
 {
 	return dbase ? true : false;
 }
@@ -68,16 +70,14 @@ table_load(const char *name)
 	int fieldnum;
 	int ret, i;
 	field *tmpf;
+	record *tmpr;
 	list *flist;
 
 	assert(name);
 	assert(strnlen(name, MAX_TABNAME_LEN+1) < MAX_TABNAME_LEN);
 
 	if (db_is_open()) {
-		maxnamlen = strlen(dbase->location) + MAX_TABNAME_LEN + 5;
-		XMALLOC(fullname, maxnamlen, NULL);
-
-		strcpy(fullname, dbase->location);
+		fullname = strdup(dbase->location);
 		fullname = strcat(fullname, "/");
 		fullname = strcat(fullname, name);
 		fullname = strcat(fullname, ".gb");
@@ -94,7 +94,7 @@ table_load(const char *name)
 		XMALLOC(tab, sizeof(table), NULL);
 
 		/* The number of fields */
-		fscanf(file, "%d", &fieldnum);
+		ret = fscanf(file, "%d", &fieldnum);
 		/* if wrong character, EOF or wrong fieldnum */
 		if (ret <= 0 || fieldnum <= 0) {
 			set_error(ERR_INVALID_TABLE);
@@ -111,14 +111,46 @@ table_load(const char *name)
 				return NULL;
 			} else {
 				list_append(flist, i, tmpf);
+#ifdef DEBUG
+				printf("%s: ", tmpf->name);
+				switch(tmpf->type) {
+				case TYPE_INT: printf("int\n"); break;
+				case TYPE_STRING: printf("string\n"); break;
+				case TYPE_TIMESTAMP: printf("timestamp\n"); break;
+				}
+#endif
 			}
 		}
 		tab->fields = flist;
 
 		/* @todo parse records */
+		while(!feof(file)) {
+			tmpr = parse_record(file, tab->fields);
+			eat_spaces(file);
+			if(!tmpr) {
+				free(tab);
+				free(tab->fields);
+				return NULL;
+			} else {
+				/* @todo append record to table */
+#ifdef DEBUG
+				for(i = 0; i < list_count_nodes(tab->fields); i++) {
+					switch(tmpr->values[i].type) {
+					case TYPE_INT:
+					case TYPE_TIMESTAMP:
+						printf("%d ", tmpr->values[i].val.v_int);
+						break;
+					case TYPE_STRING:
+						printf("%s ", tmpr->values[i].val.v_string);
+						break;
+					}
+				}
+				printf("\n");
+#endif
+			}
+		}
 
-		XMALLOC(tab->name, strlen(name), NULL);
-		strcpy(tab->name, name);
+		tab->name = strdup(name);
 
 		return tab;
 	}
@@ -146,22 +178,134 @@ parse_field(FILE *stream)
 	XMALLOC(type, MAX_TYPENAME_LEN+1, NULL);
 	g_fgets(type, MAX_TYPENAME_LEN+1, stream);
 
-	if(strcmp(type, "int"))
+	if(!strcmp(type, "int"))
 		ty = TYPE_INT;
-	else if(strcmp(type, "string"))
+	else if(!strcmp(type, "string"))
 		ty = TYPE_STRING;
-	else if(strcmp(type, "timestamp"))
+	else if(!strcmp(type, "timestamp"))
 		ty = TYPE_TIMESTAMP;
 	else {
 		set_error(ERR_INVALID_TABLE);
-		free(name); free(type);
+		free(name);
+		free(type);
 		return NULL;
 	}
 
 	tmp = field_create(name, ty);
-	free(name); free(type);
+	free(name);
+	free(type);
 
 	return tmp;
+}
+
+static record*
+parse_record(FILE *fin, list *fields)
+{
+	record *rec;
+	cell *cel;
+	elem *el;
+	field *fi;
+	int ret, count = 0;
+	char *num;
+
+	assert(fin);
+	assert(fields);
+	assert(fields->head);
+
+	XMALLOC(rec, sizeof(record), NULL);
+	rec->parent = NULL;
+	XMALLOC(rec->values, sizeof(cell) * list_count_nodes(fields), NULL);
+	XMALLOC(fi, sizeof(field), NULL);
+
+	el = fields->head;
+	while(el) {
+		fi = el->buf;
+
+		XMALLOC(cel, sizeof(cell), NULL);
+
+		switch(fi->type) {
+		case TYPE_INT:
+			cel->type = TYPE_INT;
+			ret = fscanf(fin, "%d", &cel->val.v_int);
+/* 			XMALLOC(num, 256, NULL); */
+/* 			num = g_fgets(); */
+			/* if wrong character */
+			if (ret <= 0) {
+				set_error(ERR_INVALID_TABLE);
+				free(rec);
+				free(rec->values);
+				free(cel);
+				free(fi);
+				return NULL;
+			}
+			memcpy(&rec->values[count], cel, sizeof(cell));
+			break;
+		case TYPE_STRING:
+			cel->type = TYPE_STRING;
+			XMALLOC(cel->val.v_string, MAX_STRING_LEN + 2, NULL);
+			eat_spaces(fin);
+			cel->val.v_string = fgets(cel->val.v_string, MAX_STRING_LEN + 2, fin);
+			chomp(cel->val.v_string);
+			if (strlen(cel->val.v_string) > MAX_STRING_LEN) {
+				set_error(ERR_INVALID_TABLE);
+				free(rec);
+				free(rec->values);
+				free(cel);
+				free(cel->val.v_string);
+				free(fi);
+				return NULL;
+			}
+			memcpy(&rec->values[count], cel, sizeof(cell));
+			break;
+		case TYPE_TIMESTAMP:
+			cel->type = TYPE_TIMESTAMP;
+			ret = fscanf(fin, "%d", &cel->val.v_int);
+			/* if wrong character or negative number */
+			if (ret <= 0 || cel->val.v_int < 0) {
+				set_error(ERR_INVALID_TABLE);
+				free(rec);
+				free(rec->values);
+				free(cel);
+				free(fi);
+				return NULL;
+			}
+			memcpy(&rec->values[count], cel, sizeof(cell));
+			break;
+		}
+
+		el = el->next;
+		++count;
+	}
+
+	return rec;
+}
+
+static void
+eat_spaces(FILE *stream)
+{
+	int c;
+
+	while(1) {
+		c = fgetc(stream);
+		if(c == EOF)
+			break;
+		else if(!isspace(c) && c != '\0') {
+			fseek(stream, -1, SEEK_CUR);
+			break;
+		}
+	}
+}
+
+static char*
+chomp(char *s)
+{
+	int len;
+
+	len = strlen(s);
+	if(s[len-1] == '\n')
+		s[len-1] = '\0';
+
+	return s;
 }
 
 static char*
@@ -173,21 +317,11 @@ g_fgets(char *s, int size, FILE *stream)
 		return s;
 
 	/* eat whitespaces and newlines */
-	while(1) {
-		c = fgetc(stream);
-		if(c == EOF) {
-			s[0] = '\0';
-			return s;
-		} else if(!isspace(c)) {
-			++offset;
-			s[offset] = c;
-			break;
-		}
-	}
+	eat_spaces(stream);
 
 	while(++offset < size) {
 		c = fgetc(stream);
-		if (c == EOF || isspace(c))
+		if (c == EOF || isspace(c) || c == '\0')
 			break;
 		else
 			s[offset] = c;

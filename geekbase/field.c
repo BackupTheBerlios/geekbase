@@ -16,9 +16,8 @@ field_create(char *name, field_type type)
 		free(temp);
 		return NULL;
 	} else {
-		strcpy(temp->name, name);
+		temp->name = strdup(name);
 	}
-	temp->name = name;
 	temp->type = type;
 	temp->parent = NULL;
 

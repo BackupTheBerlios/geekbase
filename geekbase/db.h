@@ -5,15 +5,14 @@
 #include <dirent.h>
 
 #include "enums.h"
-#include "blocklist.h"
 #include "table.h"
+#include "list.h"
 
 typedef struct {
-	char *location;           /**< path to database */
-	DIR *dir;                 /**<  */
-	env_type type;            /**< enviroment type */
-	unsigned ntable;          /**<  */
-	blocklist **open_tables;  /**<  */
+	char *location;     /**< path to database */
+	DIR *dir;           /**<  */
+	env_type type;      /**< enviroment type */
+	list *open_tables;  /**<  */
 } db;
 
 int db_open(const char *location);
