@@ -2,13 +2,9 @@
 #define TABLE_H
 
 typedef struct {
-	char *name;               /**< The table's name */
-#if ! defined(_IMPL_)
-	const struct db * const parent;        /**< The table's container */
-#else
-	struct db *parent;        /**< The table's container */
-#endif
-	struct field **fields;    /**< Array of the fields it contains */
+	char *name;             /**< The table's name */
+	struct db *parent;      /**< The table's container */
+	struct field **fields;  /**< Array of the fields it contains */
 } table;
 
 table* table_create(char *name);

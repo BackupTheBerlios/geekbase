@@ -1,0 +1,11 @@
+2005-02-03  Stelian Ionescu  <stelian.ionescu-zeus@poste.it>
+
+	* db.c (env_close): New function
+
+	* g_error.h: Added 2 new error types
+
+2005-02-02  Stelian Ionescu  <stelian.ionescu-zeus@poste.it>
+
+	* db.c (db_exists): New function
+	(env_init): New function
+

@@ -6,8 +6,8 @@
 
 typedef struct {
 	char *name;                  /**<  */
-	enum field_type type;        /**<  */
-	short unsigned lenght;       /**<  */
+	field_type type;             /**<  */
+	unsigned lenght;             /**<  */
 	const struct table *parent;  /**<  */
 } field;
 

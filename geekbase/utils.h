@@ -1,6 +1,7 @@
-#include <stdlib.h>
+#ifndef UTILS_H
+#define UTILS_H
 
-#include "g_error.h"
+#include <stdlib.h>
 
 /**
  * @brief Simplifies memory allocation
@@ -18,3 +19,5 @@
 
 #define VOID_P (void*)
 #define CHAR_P (unsigned char*)
+
+#endif /* UTILS_H */

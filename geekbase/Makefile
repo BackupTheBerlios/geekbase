@@ -7,7 +7,7 @@ WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Wswitch -Wpadded \
             -Wdisabled-optimization -mno-accumulate-outgoing-args -Wno-shadow \
             -ansi -pedantic
-CFLAGS    = -march=i686 -pipe $(CDEBUG) $(WARN)
+CFLAGS    = -march=i686 -pipe $(CDEBUG) $(WARN) -D_GNU_SOURCE
 LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0

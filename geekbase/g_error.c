@@ -9,6 +9,8 @@ const char *g_errlist[] = {
 	"Success",
 	"You ran out of memory",
 	"Wrong array index",
+	"Table already axists",
+	"Wrong location",
 	NULL
 };
 
