@@ -49,6 +49,7 @@ int blocklist_append_block(blocklist *bl, block *b);
 int blocklist_pushf_block(blocklist *bl, block *b);
 
 void blocklist_append_elem(blocklist *bl, void *data);
+void blocklist_del_elem(blocklist *bl, unsigned index);
 
 void *blocklist_get_elem(blocklist *bl, unsigned index);
 

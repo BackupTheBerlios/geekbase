@@ -8,6 +8,8 @@
 #include "field.h"
 #include "g_error.h"
 
+extern db *dbase;
+
 int main() {
 	table *tab;
 	list *li;
@@ -22,7 +24,7 @@ int main() {
 		return 1;
 	}
 
-	tab = table_load("table");
+	tab = table_open("table");
 	if(!tab) {
 		g_error("table_open");
 		return 1;

@@ -14,7 +14,6 @@ typedef struct {
  * @brief Creates a field.
  * @param name Field name
  * @param type Field type
- * @param length The length of the field
  * @return A pointer to the field just created
  **/
 field *field_create(char *name, field_type type);

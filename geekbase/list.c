@@ -77,7 +77,7 @@ list_ins_node(list *l, int loc, void *node)
 }
 
 list*
-list_append(list *l, int loc, void *node)
+list_insert(list *l, int loc, void *node)
 {
 	elem *last, *new;
 

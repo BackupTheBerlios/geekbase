@@ -10,7 +10,9 @@
 #include "g_error.h"
 #include "utils.h"
 
-static db *dbase = NULL;
+db *dbase = NULL;
+unsigned num_tables;
+unsigned idmin;
 
 static field *parse_field(FILE *fin);
 static record *parse_record(FILE *fin, list *fields);
@@ -35,6 +37,8 @@ db_open(const char *location)
 	}
 
 	dbase->type = TYPE_DISK;
+	num_tables = 0;
+	idmin = 0;
 	dbase->open_tables = list_new(sizeof(table));
 
 	return 0;
@@ -43,10 +47,17 @@ db_open(const char *location)
 int
 db_close(void)
 {
+	elem *el;
+
 	if(db_is_open()) {
 /* 		free(dbase->location); */
-		free(dbase->dir);
+		el = dbase->open_tables->head;
+		while(el) {
+			table_close((table*)el->buf);
+			el = el->next;
+		}
 		list_free(dbase->open_tables);
+		free(dbase->dir);
 		free(dbase);
 	}
 	dbase = NULL;
@@ -111,12 +122,11 @@ table_load(const char *name)
 				list_free(flist);
 				return NULL;
 			} else {
-				list_append(flist, i, tmpf);
+				list_insert(flist, i, tmpf);
 			}
 		}
 		tab->fields = flist;
 
-		/* @todo parse records */
 		while(!feof(file)) {
 			tmpr = parse_record(file, tab->fields);
 			eat_spaces(file);
@@ -130,12 +140,71 @@ table_load(const char *name)
 			}
 		}
 
+		fclose(file);
+
 		tab->name = strdup(name);
 
 		return tab;
 	}
 
 	return NULL;
+}
+
+int
+table_save(table *tab)
+{
+	char *fullname;
+	unsigned fnum, i;
+	elem *el;
+	field *fl;
+	FILE *fout;
+
+	assert(tab);
+
+	if (db_is_open()) {
+		fullname = strdup(dbase->location);
+		fullname = strcat(fullname, "/");
+		fullname = strcat(fullname, tab->name);
+		fullname = strcat(fullname, ".gb");
+
+		fout = fopen(fullname, "w");
+		if (!fout) {
+			set_error(ERR_OPEN_TABLE);
+			perror("table_load()");
+			free(fullname);
+			return -1;
+		}
+		free(fullname);
+
+		/* write the number of fields */
+		fnum = list_count_nodes(tab->fields);
+		fprintf(fout, "%u\n", fnum);
+
+		el = tab->fields->head;
+		while(el) {
+			fl = (field*)el->buf;
+			/* write the field definitions */
+			fprintf(fout, "%s ", fl->name);
+			switch(fl->type) {
+			case TYPE_INT:
+				fprintf(fout, "%s ", "int");
+				break;
+			case TYPE_STRING:
+				fprintf(fout, "%s ", "string");
+				break;
+			case TYPE_TIMESTAMP:
+				fprintf(fout, "%s ", "timestamp");
+				break;
+			}
+			fprintf(fout, "\n");
+
+			el = el->next;
+		}
+
+		fclose(fout);
+	}
+
+	return 0;
 }
 
 static field*

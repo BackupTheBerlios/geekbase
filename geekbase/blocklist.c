@@ -122,6 +122,12 @@ blocklist_append_elem(blocklist *bl, void *data)
 	}
 }
 
+/* @todo da implementare */
+void
+blocklist_del_elem(blocklist *bl, unsigned index)
+{
+}
+
 void*
 blocklist_get_elem(blocklist *bl, unsigned index)
 {
