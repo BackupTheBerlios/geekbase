@@ -1,6 +1,10 @@
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "table.h"
+#include "field.h"
 #include "db.h"
 #include "g_error.h"
 #include "g_limits.h"
@@ -14,14 +18,29 @@ table*
 table_open(const char *name)
 {
 	table *tab;
+	char *fullname;
+	struct stat st;
 
 	assert(name);
 
 	if(!table_is_open(name)) {
-		tab = table_load(name);
-		if(!tab) {
-			return NULL;
+		fullname = strdup(dbase->location);
+		fullname = strcat(fullname, "/");
+		fullname = strcat(fullname, name);
+		fullname = strcat(fullname, ".gb");
+
+		if(stat(fullname, &st) == 0) {
+			tab = table_load(name);
+			if(!tab) {
+				return NULL;
+			}
+		} else {
+			XMALLOC(tab, sizeof(tab), NULL);
+			tab->name = strdup(name);
+			tab->records = blocklist_new(25, sizeof(record));
+			tab->fields = list_new(sizeof(field));
 		}
+
 		tab->id = idmin;
 		list_insert(dbase->open_tables, tab->id, (void*)tab);
 		++idmin;
