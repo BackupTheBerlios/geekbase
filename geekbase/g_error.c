@@ -15,7 +15,7 @@ const char *g_errlist[] = {
 void g_error(const char *msg)
 {
 	if(msg)
-		printf("%s: ", msg);
+		fprintf(stderr, "%s: ", msg);
 
-	printf("%s\n", g_errlist[g_errno]);
+	fprintf(stderr, "%s\n", g_errlist[g_errno]);
 }
