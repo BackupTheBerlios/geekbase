@@ -18,18 +18,11 @@ table*
 table_open(const char *name)
 {
 	table *tab;
-	char *fullname;
-	struct stat st;
 
 	assert(name);
 
 	if(!table_is_open(name)) {
-		fullname = strdup(dbase->location);
-		fullname = strcat(fullname, "/");
-		fullname = strcat(fullname, name);
-		fullname = strcat(fullname, ".gb");
-
-		if(stat(fullname, &st) == 0) {
+		if(table_exists(name)) {
 			tab = table_load(name);
 			if(!tab) {
 				return NULL;
@@ -71,6 +64,23 @@ int
 table_delete(const table *tab)
 {
 	return 0;
+}
+
+bool
+table_exists(const char *name)
+{
+	char *fullname;
+	struct stat st;
+
+	fullname = strdup(dbase->location);
+	fullname = strcat(fullname, "/");
+	fullname = strcat(fullname, name);
+	fullname = strcat(fullname, ".gb");
+
+	if(stat(fullname, &st) == 0)
+		return true;
+	else
+		return false;
 }
 
 /* @todo da implementare */

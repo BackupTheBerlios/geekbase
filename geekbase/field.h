@@ -16,7 +16,7 @@ typedef struct {
  * @param type Field type
  * @return A pointer to the field just created
  **/
-field *field_create(char *name, fieldtype type);
+field *field_create(const char *name, fieldtype type);
 
 /**
  * @brief Frees a field.

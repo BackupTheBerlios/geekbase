@@ -33,5 +33,6 @@ int table_close(table *tab);
 int table_delete(const table *tab);
 
 bool table_is_open(const char *name);
+bool table_exists(const char *name);
 
 #endif /* TABLE_H */

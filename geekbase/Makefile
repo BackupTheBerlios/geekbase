@@ -5,9 +5,9 @@ WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Waggregate-return -Winline -W -Wno-unused -Wsign-compare \
             -Wformat -Wformat-nonliteral -Wformat-security -Wpacked \
             -Wswitch -Wpadded -Wdisabled-optimization -Wno-shadow \
-            -mno-accumulate-outgoing-args -ansi -pedantic
-CFLAGS    = -D_GNU_SOURCE -DDEBUG
-ifndef NODEBUG
+            -mno-accumulate-outgoing-args -ansi -pedantic -mpreferred-stack-boundary=2
+CFLAGS    = -D_GNU_SOURCE
+ifndef NDEBUG
 CFLAGS += $(CDEBUG) $(WARN)
 endif
 LDFLAGS   = -shared -fPIC

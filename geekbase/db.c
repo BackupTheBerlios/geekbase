@@ -154,9 +154,10 @@ int
 table_save(table *tab)
 {
 	char *fullname;
-	unsigned fnum, i;
+	unsigned fnum, i, j;
 	elem *el;
 	field *fl;
+	record *rec;
 	FILE *fout;
 
 	assert(tab);
@@ -199,6 +200,24 @@ table_save(table *tab)
 			fprintf(fout, "\n");
 
 			el = el->next;
+		}
+
+		j = 0;
+		rec = blocklist_get_elem(tab->records, j);
+		while(rec) {
+			for(i = 0; i < fnum; i++) {
+                                switch(rec->values[i].type) {
+                                case TYPE_INT:
+                                case TYPE_TIMESTAMP:
+                                        fprintf(fout, "%d ", rec->values[i].val.v_int);
+                                        break;
+                                case TYPE_STRING:
+                                        fprintf(fout, "%s\n", rec->values[i].val.v_string);
+                                        break;
+                                }
+			}
+			fprintf(fout, "\n");
+                        rec = blocklist_get_elem(tab->records, ++j);
 		}
 
 		fclose(fout);
