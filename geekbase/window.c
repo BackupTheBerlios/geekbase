@@ -120,21 +120,32 @@ winsrec_create(void)
 		
 
 	win=window_create("Inserisci Record", 10, 28, 1);
-
-	field[0]=new_field(1, 8, 0, 13 ,5, 0); 
-	field[1]=new_field(1, 2, 1, 13, 5, 0);
-	field[2]=new_field(1, 2, 2, 13, 5, 0);
-	field[3]=new_field(1, 12, 3, 13, 5, 0);	
-	field[4]=new_field(1, 12, 4, 13, 5, 0);	
-	field[5]=NULL;
-
-	for(i=0; i<=5; ++i) {
-		set_field_fore(field[i], 
-			       COLOR_PAIR(1) | A_REVERSE | A_UNDERLINE);
-		set_field_back(field[i], COLOR_PAIR(1)| A_UNDERLINE);
+ 
+	win->field[0]=new_field(1, 9, 0, 13 ,0, 0); /* giorno */ 
+	set_field_type(win->field[0], TYPE_ALPHA, 6); 
+	win->field[1]=new_field(1, 2, 1, 13, 0, 0); /* da */
+	set_field_type(win->field[1], TYPE_INTEGER, 1); 
+	win->field[2]=new_field(1, 2, 1, 19, 0, 0); /* a */
+	set_field_type(win->field[2], TYPE_INTEGER, 1); 
+	win->field[3]=new_field(1, 2, 2, 13, 0, 1); /* aula */
+ 	set_field_type(win->field[2], TYPE_ALNUM, 1); 
+	win->field[4]=new_field(1, 12, 3, 13, 0, 1); /* materia */	
+ 	set_field_type(win->field[2], TYPE_ALPHA, 1); 
+	win->field[5]=new_field(1, 12, 4, 13, 0, 1); /* docente */
+ 	set_field_type(win->field[2], TYPE_ALNUM, 1); 
+	win->field[6]=new_field(1, 2, 6, 12, 0, 1);
+	win->field[7]=NULL;
+	
+	set_field_buffer(win->field[6], 0, "OK");
+	field_opts_off(win->field[6], O_EDIT );
+	for(i=0; i<=6; ++i) {
+		set_field_fore(win->field[i], 
+			       COLOR_PAIR(1) | A_UNDERLINE);
+		set_field_back(win->field[i], COLOR_PAIR(1)| A_UNDERLINE);
+			field_opts_off(win->field[i], O_AUTOSKIP );
 	}
 
-	win->form=new_form(field);
+	win->form=new_form(win->field);
 
 	set_form_win(win->form, win->body->win);
 	set_form_sub(win->form, derwin(win->body->win, 8, 26, 1, 1));
@@ -142,11 +153,11 @@ winsrec_create(void)
         post_form(win->form); 
 
 	mvwprintw(win->body->win, 1 , 1, "Giorno:");
-	mvwprintw(win->body->win, 2 , 1, "Inizio Ora:");
+	mvwprintw(win->body->win, 2 , 1, "Orario da:");
+	mvwprintw(win->body->win, 2 , 17, "a:");
 	mvwprintw(win->body->win, 3 , 1, "Aula:");
 	mvwprintw(win->body->win, 4 , 1, "Materia:");
 	mvwprintw(win->body->win, 5 , 1, "Docente:");
-	mvwprintw(win->body->win, 8 , 1, "[INVIO] per inviare i dati");
 		
 	return win;
 }
@@ -162,13 +173,14 @@ weditrec_create(void)
 
 	win=window_create("Edita Record", 11, 28, 2);
 
-	field[5]=new_field(1, 8, 0, 13 ,5, 0); 
+	field[6]=new_field(1, 8, 0, 13 ,5, 0); 
 	field[0]=new_field(1, 8, 1, 13 ,5, 0); 
 	field[1]=new_field(1, 2, 2, 13, 5, 0);
-	field[2]=new_field(1, 2, 3, 13, 5, 0);
-	field[3]=new_field(1, 12, 4, 13, 5, 0);	
-	field[4]=new_field(1, 12, 5, 13, 5, 0);	
-	field[6]=NULL;
+	field[2]=new_field(1, 2, 2, 16, 5, 0);
+	field[3]=new_field(1, 2, 3, 13, 5, 0);
+	field[4]=new_field(1, 12, 4, 13, 5, 0);	
+	field[5]=new_field(1, 12, 5, 13, 5, 0);	
+	field[7]=NULL;
 
 	for(i=0; i<=6; ++i) {
 		set_field_fore(field[i], 
@@ -185,7 +197,8 @@ weditrec_create(void)
 
 	mvwprintw(win->body->win, 1,  1, "Id Record:");
 	mvwprintw(win->body->win, 2 , 1, "Giorno:");
-	mvwprintw(win->body->win, 3 , 1, "Inizio Ora:");
+	mvwprintw(win->body->win, 3 , 1, "Orario: da");
+	mvwprintw(win->body->win, 3 , 4, "a:");
 	mvwprintw(win->body->win, 4 , 1, "Aula:");
 	mvwprintw(win->body->win, 5 , 1, "Materia:");
 	mvwprintw(win->body->win, 6 , 1, "Docente:");
@@ -224,7 +237,7 @@ wvisualtab_create(void)
 	win=window_create("Tabella Orario", 21, 76, 4);	
 	
 	mvwprintw(win->body->win, 1, 1, 
-		  "        L            M            M            G",
+		  "        L            M            M            G%s",
 		  "            V");
        
 

@@ -22,4 +22,5 @@ bool db_is_open(void);
 table *table_load(const char *name);
 int table_save(table *tab);
 
+
 #endif /* DB_H */

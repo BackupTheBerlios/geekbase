@@ -21,7 +21,7 @@ int menuedita_event(int item, LPR_WINDOW *curwin);
 int  menucerca_event(int item, LPR_WINDOW *curwin);
 int menuhelp_event(int item, LPR_WINDOW *curwin);
 
-int window_event(LPR_WINDOW *curwindow);
+int window_event(LPR_WINDOW *curwindow, table *tab);
 int shortcut(LPR_WINDOW *curwindow);
 void open_window(int id, LPR_WINDOW *curwin);
 

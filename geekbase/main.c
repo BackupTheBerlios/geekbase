@@ -16,9 +16,15 @@ int main()
 	MENUPAN *menucerca;
 	MENUPAN *menuhelp;
 	LPR_WINDOW *curwin;
+	
+	field *fi;
+	table *tab;
+	list *li;
+	
 	int g_event=FOCUS_M;	
 	int i=0;
-	table *tab;
+
+	
 
 
 	if(db_open(".")) {
@@ -26,11 +32,24 @@ int main()
                 return 1;
         }
 
-        tab = table_open("orario");
-        if(!tab) {
-                g_error("table_open");
-                return 1;
-        }
+	tab=table_open("orario");		
+	
+       
+		fi = field_create("ID", TYPE_INT);
+		list_insert(tab->fields, 0, fi);
+		fi = field_create("Giorno", TYPE_INT);
+		list_insert(tab->fields, 1, fi);
+		fi = field_create("Inizio", TYPE_INT);
+		list_insert(tab->fields, 2, fi);
+		fi = field_create("Fine", TYPE_INT);
+		list_insert(tab->fields, 3, fi);
+		fi = field_create("Aula", TYPE_STRING);
+		list_insert(tab->fields, 4, fi);
+		fi = field_create("Materia", TYPE_STRING);
+		list_insert(tab->fields, 5, fi);
+		fi = field_create("Docente", TYPE_STRING);
+		list_insert(tab->fields, 6, fi);	
+    
 
 	initscr();
 
@@ -74,7 +93,7 @@ int main()
 					i++;
 			}
 			i=0;
-			g_event=window_event(curwin);
+			g_event=window_event(curwin, tab);
 		      
 		}
 			      

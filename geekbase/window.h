@@ -9,6 +9,7 @@ typedef struct lpr_window_node {
 	PANEL *shad;
 	char *title;
 	FORM *form;
+	FIELD *field[10];
 	bool hidden;
 	char id;
 	bool hasfocus;
