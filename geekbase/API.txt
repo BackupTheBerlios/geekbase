@@ -1,0 +1,127 @@
+/* -*- c -*- */
+Strutture dati:
+
+enum source_type {
+};
+
+struct env {
+};
+
+struct options {    
+};
+
+struct db {
+};
+
+struct table {
+};
+
+enum field_type {
+     TYPE_INT,
+     TYPE_STRING,
+     TYPE_TIMESTAMP
+};
+
+struct field {
+       char * name;
+       enum field_type type;
+       short unsigned length;
+       struct table * parent;
+};
+
+
+/*
+ * API:
+ */
+
+/*
+ * Inizializza la libreria.
+ * @param options Initialization options
+ * @param environment The environment to connect to
+ */
+int db_init (struct options * options, struct env * environment)
+
+/*
+ * Crea un database
+ */
+int db_create (struct db *)
+
+/*
+ * Rimuovi un database dalla memoria
+ */
+int db_free (struct db *)
+
+/*
+ * Cancella un database
+ */
+int db_remove (struct db *)
+
+/*
+ * Sincronizza la memoria con il disco
+ */
+int db_sync (struct db *)
+
+/*
+ */
+int db_get (char * db_name, struct db *)
+
+/*
+ */
+int db_get_table (char * name, struct db *, struct table *)
+
+/*
+ * Aggiunge tabella al db
+ */
+int db_add_table (struct db *, struct table *)
+
+/*
+ * Rimuove tabella dal db
+ */
+int db_remove_table (struct db *, char * table)
+
+/*
+ */
+int db_edit (struct db *, char *)
+
+
+/*
+ * Crea tabella
+ */
+int table_create (struct table *)
+
+/*
+ * Rimuove tabella
+ */
+int table_free (struct table *)
+
+/*
+ */
+int table_get_field (char * name, struct table *, struct field *)
+
+/*
+ * Aggiunge campo alla tabella
+ */
+int table_add_field (struct table *, struct field *)
+
+/*
+ * Rimuove campo dalla tabella
+ */
+int table_remove_field (struct table *, char *)
+
+/*
+ */
+int table_edit (struct table *, char *)
+
+ 
+/*
+ * Crea un campo
+ */
+int field_create ( struct field *)
+
+/*
+ */
+int field_free (struct field *)
+
+/*
+ */
+int field_edit (struct field *, char *)

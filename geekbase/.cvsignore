@@ -1,0 +1,4 @@
+.*.d*
+geekbase
+html_docs
+libgeekdb.so*
