@@ -194,7 +194,7 @@ menucerca_event(int item, LPR_WINDOW *curwin)
 int
 menuhelp_event(int item, LPR_WINDOW *curwin)
 {
-	int gevent=FOCUS_M;
+	int g_event=FOCUS_M;
 
 	switch(item) {
 	case 0:
