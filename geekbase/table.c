@@ -6,7 +6,7 @@
 #include "utils.h"
 
 table*
-table_create (char *name)
+table_open(const char *name, unsigned mode)
 {
 	table *tab;
 
@@ -25,7 +25,7 @@ table_create (char *name)
 }
 
 int
-table_delete(char *name)
+table_delete(const table *tab)
 {
 	return 0;
 }

@@ -1,13 +1,15 @@
 CC        = cc
-CDEBUG    = -ggdb
+CDEBUG    = -g3
 WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings \
             -Waggregate-return -Winline -W -Wno-unused -Wsign-compare \
             -Wformat -Wformat-nonliteral -Wformat-security -Wpacked \
-            -Wswitch -Wpadded \
-            -Wdisabled-optimization -mno-accumulate-outgoing-args -Wno-shadow \
-            -ansi -pedantic
-CFLAGS    = -march=i686 -pipe $(CDEBUG) $(WARN) -D_GNU_SOURCE
+            -Wswitch -Wpadded -Wdisabled-optimization -Wno-shadow \
+            -mno-accumulate-outgoing-args -ansi -pedantic
+CFLAGS    = -D_GNU_SOURCE
+ifndef NODEBUG
+CFLAGS += $(CDEBUG) $(WARN)
+endif
 LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0
@@ -37,17 +39,20 @@ $(LIB): $(LIB_OBJS)
 	$(CC) $(LDFLAGS) $^ -o $@
 	ln -sf $@ $(basename $@)
 
+ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 .%.d: %.c
+	echo Generating dependencies for $< ...
 	$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	$(RM) $@.$$$$
 
 -include $(DEPS)
+endif
 
 clean:
-	rm -f $(OBJS)
-	rm -f $(DEPS)
-	rm -f $(LIB) $(basename $(LIB)) $(EXEC)
+	$(RM) $(OBJS)
+	$(RM) $(DEPS)
+	$(RM) $(LIB) $(basename $(LIB)) $(EXEC)
 
 install: all
 	mkdir -p $(BINDIR) $(LIBDIR)
@@ -56,7 +61,8 @@ install: all
 	cd $(LIBDIR); ln -sf $(LIB) $(basename $(LIB))
 
 uninstall:
-	rm -f $(BINDIR)/$(EXEC)
-	rm -f $(LIBDIR)/$(LIB) $(LIBDIR)/$(basename $(LIB))
+	$(RM) $(BINDIR)/$(EXEC)
+	$(RM) $(LIBDIR)/$(LIB) $(LIBDIR)/$(basename $(LIB))
 
-.PHONY: clean install uninstall
+.PHONY: clean install uninstall exec_msg lib_msg
+.SILENT: $(DEPS) exec_msg lib_msg

@@ -14,6 +14,7 @@ int env_init(const char *location)
 	DIR *dbdir;
 
 	assert(location);
+	/* env_init can be called only once */
 	assert(!dbase);
 
 	XMALLOC(dbase, sizeof(dbase), -1);

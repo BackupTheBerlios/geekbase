@@ -7,7 +7,7 @@ typedef struct {
 	struct field **fields;  /**< Array of the fields it contains */
 } table;
 
-table* table_create(char *name);
-int table_delete(char *name);
+table *table_open(const char *name, unsigned mode);
+int table_delete(const table *tab);
 
 #endif /* TABLE_H */
