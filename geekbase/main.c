@@ -1,33 +1,93 @@
-#include <stdlib.h>
+#include "lpr.h"
+#include "workspace.h"
+#include "terminal.h"
+#include "events.h"
+#include "window.h"
+#include "lpr_screen.h"
 
-#include "geekbase.h"
-#include "buffer.h"
 
-int main(/*int argc, char **argv*/)
+
+int main()
 {
-	unsigned i;
-	int *p;
-	buffer *b = buffer_new (sizeof(int), 4);
-	buffer *c = buffer_new (sizeof(int), 5);
+	MENU *workspace;
+	MENUPAN *menulpr;
+	MENUPAN *menuedita;
+	MENUPAN *menuvisual;
+	MENUPAN *menucerca;
+	MENUPAN *menuhelp;
+	LPR_WINDOW *curwin;
+	int g_event=FOCUS_M;	
+	int i=0;
+	table *tab;
 
-	for (i = 0; i < 4; i++)
-		buffer_add (b, (void *) &i);
-	for (i = 4; i < 9; i++)
-		buffer_add (c, (void *) &i);
 
-	if(buffer_merge(b, 0, c, 0, 2) == -1) {
-		printf("Sei fottuto");
-		return EXIT_FAILURE;
+	if(db_open(".")) {
+                g_error("db_open");
+                return 1;
+        }
+
+        tab = table_open("orario");
+        if(!tab) {
+                g_error("table_open");
+                return 1;
+        }
+
+	initscr();
+
+	if(has_colors()) {
+		start_color();
+		init_pair(1, COLOR_WHITE, COLOR_BLUE);
+		init_pair(2, COLOR_BLACK, COLOR_BLACK);
+		init_pair(3, COLOR_BLACK, COLOR_WHITE);
+		wbkgd(stdscr, COLOR_PAIR(3) | 32);
 	}
 
-	for (i = 0; i < b->used; i++) {
-		p = (int *)buffer_get(b, i);
-		printf("%d ", *p);
+	keypad(stdscr, TRUE);
+	raw();
+	nodelay(stdscr, TRUE);
+	timeout(50);
+	termcontrol();
+/*	curs_set(0);*/
+	cbreak();
+	noecho();
+     
+	curwin=lpr_init_windows();
+	
+	workspace=workspace_create();
+	menulpr=menulpr_create();
+	menuedita=menuedita_create();
+	menuvisual=menuvisual_create();
+	menucerca=menucerca_create();
+	menuhelp=menuhelp_create();
+	
+	while(g_event!=LPR_EXIT)
+	{
+		lpr_refresh();	
+		
+		if(g_event==FOCUS_M) 
+			g_event=menu_event(workspace, menulpr, menuedita, 
+					   menuvisual, menucerca, menuhelp,
+					   curwin);
+	       	if(g_event==FOCUS_W) {
+			while(curwin->hasfocus==false && i!=11) {
+					curwin=curwin->next;	
+					i++;
+			}
+			i=0;
+			g_event=window_event(curwin);
+		      
+		}
+			      
 	}
-	printf("\n");
+	
+	endwin();
 
-	buffer_free(b);
-	buffer_free(c);
+        if(db_close()) {
+                g_error("db_close()");
+                return 1;
+        }
 
-	return EXIT_SUCCESS;
+        return 0;
+	
 }
+

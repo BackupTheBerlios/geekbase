@@ -11,7 +11,7 @@ ifndef NODEBUG
 CFLAGS += $(CDEBUG) $(WARN)
 endif
 LDFLAGS   = -shared -fPIC
-LIBS	  = -lncurses
+LIBS	  = -lncurses -lmenu -lform -lpanel
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
@@ -20,7 +20,8 @@ LIB_SOURCES   = block.c blocklist.c buffer.c db.c field.c g_error.c \
 LIB_OBJS      = $(LIB_SOURCES:.c=.o)
 
 EXEC          = geekbase
-EXEC_SOURCES  = main.c
+EXEC_SOURCES  = events.c lpr_error.c lpr_screen.c main.c terminal.c \
+		wevents.c window.c workspace.c
 EXEC_OBJS     = $(EXEC_SOURCES:.c=.o)
 
 TEST          = g_test
