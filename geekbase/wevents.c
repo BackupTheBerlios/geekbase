@@ -145,7 +145,6 @@ insrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 	int g_event=FOCUS_W;
 	record *rec=NULL;
 	int i=-1, dummy;
-	char *str;
 	
 	switch(key) {
 	case KEY_UP:		
@@ -347,7 +346,6 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 	int g_event=FOCUS_W;
 	record *rec=NULL;
 	int i=-1, dummy;
-	char *str;
 	
 	switch(key) {
 	case KEY_UP:		
@@ -369,8 +367,7 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 		break;
 	case KEY_RIGHT:
 		form_driver(curwin->form, REQ_RIGHT_CHAR);
-		break;
-	      
+		break;	      
 	case KEY_DC:
 		form_driver(curwin->form, REQ_DEL_CHAR);
 		break;	
@@ -379,7 +376,7 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 		form_driver(curwin->form, REQ_DEL_CHAR);
 		break;
 	case 10:
-		if(curwin->form->current != curwin->field[6])
+		if(curwin->form->current != curwin->field[7])
 			break;
 	}
 	

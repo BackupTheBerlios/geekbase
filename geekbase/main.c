@@ -4,7 +4,7 @@
 #include "events.h"
 #include "window.h"
 #include "lpr_screen.h"
-
+#include <signal.h>
 
 
 int main()
@@ -24,7 +24,8 @@ int main()
 	int g_event=FOCUS_M;	
 	int i=0;
 
-
+	
+	signal(SIGQUIT, SIG_IGN);
 	if(db_open(".")) {
                 g_error("db_open");
                 return 1;
