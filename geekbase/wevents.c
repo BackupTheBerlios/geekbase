@@ -9,7 +9,7 @@ int day(char *buf);
 
 int wevent(LPR_WINDOW *curwin, int key, table *tab);
 int insrec_wevent(LPR_WINDOW *curwin, int key, table *tab);
-
+int editrec_wevent(LPR_WINDOW *curwin, int key, table *tab);
 
 int
 window_event(LPR_WINDOW *curwindow,table *tab)
@@ -264,7 +264,7 @@ insrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 	       
 			
 		table_save(tab);
-		hide_window(curwin);
+		window_hide(curwin);
 		break;
 	default:
 		form_driver(curwin->form, key);
