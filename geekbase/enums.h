@@ -1,6 +1,8 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
+#include <curses.h>
+
 /* Enums */
 typedef enum {
 	TYPE_INT,       /**< field is an integers collector */
@@ -12,9 +14,9 @@ typedef enum {
 	TYPE_DISK  /**<  */
 } env_type;
 
-typedef enum {
-	false,
-	true
-} bool;
+/* typedef enum { */
+/* 	false, */
+/* 	true */
+/* } bool; */
 
 #endif /* ENUMS_H */
