@@ -1,8 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <sys/types.h>
-
 #include "buffer.h"
 
 struct block;
@@ -20,7 +18,7 @@ struct block_ {
  * @param data The element to add
  * @return A pointer to the block just created
  */
-block *block_new(size_t member_size, size_t size);
+block *block_new(unsigned member_size, unsigned size);
 
 /**
  * @brief Free a  block.

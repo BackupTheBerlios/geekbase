@@ -8,7 +8,7 @@
 extern unsigned geek_errno;
 
 buffer*
-buffer_new (size_t member_size, size_t size)
+buffer_new (unsigned member_size, unsigned size)
 {
 	buffer *temp;
 
@@ -65,7 +65,7 @@ buffer_add(buffer *buff, void *data)
 }
 
 void*
-buffer_get(buffer *buff, size_t index)
+buffer_get(buffer *buff, unsigned index)
 {
 	void *tmp_buf;
 
@@ -83,7 +83,7 @@ buffer_get(buffer *buff, size_t index)
 }
 
 int 
-buffer_merge(buffer *dest, size_t destpos, buffer *src, size_t src_startpos, size_t n)
+buffer_merge(buffer *dest, unsigned destpos, buffer *src, unsigned src_startpos, unsigned n)
 {
 	void *tmp_buf;
 

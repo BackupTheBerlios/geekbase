@@ -7,13 +7,13 @@
 
 extern unsigned geek_errno;
 
-block *block_new(size_t member_size, size_t size)
+block *block_new(unsigned member_size, unsigned size)
 {
 	block *bl;
 
-	assert(member_size!= 0);
+	assert(member_size != 0);
 
-	XMALLOC(block, bl, sizeof(block),NULL);
+	XMALLOC(block, bl, sizeof(block), NULL);
 	bl->buff = buffer_new(member_size, size);
 	bl->next= NULL;
 
@@ -22,6 +22,8 @@ block *block_new(size_t member_size, size_t size)
 
 void block_free(block *morituro) 
 {
+	assert(morituro);
+
 	buffer_free(morituro->buff);
 	free(morituro); /* die!! :) */
 }

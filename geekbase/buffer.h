@@ -7,8 +7,8 @@
 typedef struct {
 	void *buf;          /**< The memory zone occupied by the buffer */
 	unsigned used;      /**< The number of objects in the buffer */
-	size_t size;        /**< The maximum number of objects that fit into the buffer */
-	size_t member_size; /**< The size of the objects in the buffer */
+	unsigned size;        /**< The maximum number of objects that fit into the buffer */
+	unsigned member_size; /**< The size of the objects in the buffer */
 } buffer;
 
 /**
@@ -17,7 +17,7 @@ typedef struct {
  * @param size The number of locations to allocate
  * @return A pointer to the buffer just created
  **/
-buffer *buffer_new(size_t member_size, size_t size);
+buffer *buffer_new(unsigned member_size, unsigned size);
 
 /**
  * @brief Frees the memory allocated by buffer.
@@ -33,7 +33,7 @@ void buffer_free(buffer *buff);
  **/
 int buffer_add(buffer *buff, void *data);
 
-void *buffer_get(buffer *buff, size_t index);
+void *buffer_get(buffer *buff, unsigned index);
 
 /**
  * @brief Merge two buffers
@@ -44,6 +44,6 @@ void *buffer_get(buffer *buff, size_t index);
  * @param n The number of elements to copy from the source buffer
  * @return 0 if all went ok, -1 if malloc failed
  **/
-int buffer_merge(buffer *dest, size_t destpos, buffer *src, size_t src_startpos, size_t n);
+int buffer_merge(buffer *dest, unsigned destpos, buffer *src, unsigned src_startpos, unsigned n);
 
 #endif /* BUFFER_H */

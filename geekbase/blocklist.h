@@ -7,8 +7,8 @@
 
 typedef struct {
 	unsigned blocknum;
-	size_t member_size;
-	size_t block_size;
+	unsigned member_size;
+	unsigned block_size;
 	block *first;
 } blocklist;
 
@@ -17,7 +17,7 @@ typedef struct {
  * @param block_size The size of the block container
  * @return A pointer to the blocklist just created
  */
-blocklist *blocklist_new(size_t block_size, size_t member_size);
+blocklist *blocklist_new(unsigned block_size, unsigned member_size);
 
 /**
  * @brief Frees a blocklist and the blocks it contains.

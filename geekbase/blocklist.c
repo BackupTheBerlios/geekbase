@@ -6,7 +6,7 @@
 extern unsigned geek_errno;
 
 blocklist*
-blocklist_new(size_t block_size, size_t member_size)
+blocklist_new(unsigned block_size, unsigned member_size)
 {
 	blocklist *temp;
 	block *first;

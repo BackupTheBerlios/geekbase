@@ -33,4 +33,6 @@ field_edit(field *fl,char *name, short unsigned lenght)
 		return -1;
 	fl->name=name;
 	fl->lenght=lenght;
+
+	return 0;
 }
