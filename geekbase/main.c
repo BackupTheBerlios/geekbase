@@ -16,15 +16,13 @@ int main()
 	MENUPAN *menucerca;
 	MENUPAN *menuhelp;
 	LPR_WINDOW *curwin;
-	
+
 	field *fi;
 	table *tab;
 	list *li;
-	
+
 	int g_event=FOCUS_M;	
 	int i=0;
-
-	
 
 
 	if(db_open(".")) {
@@ -34,7 +32,7 @@ int main()
 
 	tab=table_open("orario");		
 	
-       
+
 		fi = field_create("ID", TYPE_INT);
 		list_insert(tab->fields, 0, fi);
 		fi = field_create("Giorno", TYPE_INT);
@@ -69,16 +67,16 @@ int main()
 /*	curs_set(0);*/
 	cbreak();
 	noecho();
-     
+
 	curwin=lpr_init_windows();
-	
+
 	workspace=workspace_create();
 	menulpr=menulpr_create();
 	menuedita=menuedita_create();
 	menuvisual=menuvisual_create();
 	menucerca=menucerca_create();
 	menuhelp=menuhelp_create();
-	
+
 	while(g_event!=LPR_EXIT)
 	{
 		lpr_refresh();	
@@ -94,11 +92,9 @@ int main()
 			}
 			i=0;
 			g_event=window_event(curwin, tab);
-		      
 		}
-			      
 	}
-	
+
 	endwin();
 
         if(db_close()) {
@@ -107,6 +103,4 @@ int main()
         }
 
         return 0;
-	
 }
-

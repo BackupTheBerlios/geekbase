@@ -4,6 +4,13 @@
 #include "table.h"
 #include "workspace.h"
 
+int hour(int start, int end, table *tab, record *rec);
+int day(char *buf);
+
+int wevent(LPR_WINDOW *curwin, int key, table *tab);
+int insrec_wevent(LPR_WINDOW *curwin, int key, table *tab);
+
+
 int
 window_event(LPR_WINDOW *curwindow, table *tab)
 {
@@ -118,7 +125,7 @@ open_window (int id, LPR_WINDOW *curwin)
 
 }
 
-int 
+int
 wevent(LPR_WINDOW *curwin, int key, table *tab)
 {
 	int g_event=FOCUS_W;
@@ -293,14 +300,14 @@ hour(int start, int end, table *tab, record *rec)
 {
 	int i=0, s ,e;
 	record *dummy;
-       
+
 
 	if(start < 9 || end > 18) 
 		return 1;
-	
+
 	if(start > end || start == end) 
 		return 1;
-	
+
 	if(table_exists("orario")) {
 		dummy = blocklist_get_elem(tab->records, i);
 		while(dummy && rec->values[0].val.v_int != 
@@ -328,4 +335,3 @@ hour(int start, int end, table *tab, record *rec)
 
 	return 0;
 }
-
