@@ -1,5 +1,5 @@
 #include "field.h"
-
+#include "errors.h"
 field *
 field_create(char *name,int field_type, short unsigned lenght)
 {
@@ -7,9 +7,9 @@ field_create(char *name,int field_type, short unsigned lenght)
       
 	XMALLOC(field, temp, sizeof(field), NULL); 
 
-	field->name=name;
-	field->type=field_type;
-	field->lenght=lenght;
+	temp->name=name;
+	temp->type=field_type;
+	temp->lenght=lenght;
 
 	return temp;
 }

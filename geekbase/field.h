@@ -10,7 +10,7 @@
  * @param field_type 
  * @return A pointer to the field just created
  */
-field *field_create(char *name, enum field_type type, short unigned lenght);
+field *field_create(char *name, int type, short unsigned lenght);
 
 /**
  * @brief Frees a field.
