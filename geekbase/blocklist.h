@@ -15,6 +15,7 @@ typedef struct {
 /**
  * @brief Creates a blocklist with one block.
  * @param block_size The size of the block container
+ * @param member_size The size of the member of the buffer in the block
  * @return A pointer to the blocklist just created
  */
 blocklist *blocklist_new(unsigned block_size, unsigned member_size);

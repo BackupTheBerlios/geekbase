@@ -1,11 +1,12 @@
 #include "field.h"
-#include "errors.h"
+#include "utils.h"
+
 field *
-field_create(char *name,int field_type, short unsigned lenght)
+field_create(char *name, int field_type, short unsigned lenght)
 {
 	field *temp;
       
-	XMALLOC(field, temp, sizeof(field), NULL); 
+	XMALLOC(temp, sizeof(field), NULL); 
 
 	temp->name=name;
 	temp->type=field_type;
@@ -27,7 +28,7 @@ field_free(field *morituro)
  * This because we can't convert points from a type to another.
  */
 int
-field_edit(field *fl,char *name, short unsigned lenght)
+field_edit(field *fl, char *name, short unsigned lenght)
 {
 	if(!fl)
 		return -1;

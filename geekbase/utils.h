@@ -1,9 +1,13 @@
+#include <stdlib.h>
+
+#include "errors.h"
+
 /**
  * @brief Simplifies memory allocation
  * Controls the pointer returned by malloc.
  */
-#define XMALLOC(type, ptr, size, retval) \
-	ptr = (type*) malloc(size); \
+#define XMALLOC(ptr, size, retval) \
+	ptr = malloc(size); \
 	if (ptr == NULL) { \
 		geek_errno = ERR_NOMEM;	\
 		return retval; \

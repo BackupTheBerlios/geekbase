@@ -3,25 +3,21 @@
 
 #include "buffer.h"
 
-struct block;
-
-typedef struct block_ block;
-
-struct block_ {
+typedef struct block {
 	buffer *buff;
-	block *next;
-};
+	struct block *next;
+} block;
 
 /**
  * @brief Creates a new block.
  * @param member_size The size of the objects to contain
- * @param data The element to add
+ * @param size The size of the buffer it contains
  * @return A pointer to the block just created
  */
 block *block_new(unsigned member_size, unsigned size);
 
 /**
- * @brief Free a  block.
+ * @brief Free a block.
  * @param morituro The block to kill
  */
 void block_free(block *morituro);

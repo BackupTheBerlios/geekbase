@@ -1,8 +1,12 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include "geekbase.h"
+typedef struct {
+	char *name;             /**<  */
+	struct db *parent;      /**<  */
+	struct field **fields;  /**< Array of the fields it contains */
+} table;
 
-int table_create(char * name, struct table *);
+int table_create(char *name, table *tab);
 
 #endif /* TABLE_H */

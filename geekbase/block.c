@@ -13,7 +13,7 @@ block *block_new(unsigned member_size, unsigned size)
 
 	assert(member_size != 0);
 
-	XMALLOC(block, bl, sizeof(block), NULL);
+	XMALLOC(bl, sizeof(block), NULL);
 	bl->buff = buffer_new(member_size, size);
 	bl->next= NULL;
 

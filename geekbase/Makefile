@@ -1,11 +1,13 @@
-CC        = gcc
+CC        = cc
 CDEBUG    = -ggdb
 WARN      = -Wall -Wstrict-prototypes -Wmissing-prototypes -Winline -Wshadow \
             -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings \
             -Waggregate-return -Winline -W -Wno-unused -Wsign-compare \
-            -Wformat-nonliteral -Wformat-security -Wpacked \
-            -Wdisabled-optimization -mno-accumulate-outgoing-args -Wno-shadow
-CFLAGS    = -D_REENTRANT -D_GNU_SOURCE -march=i686 -pipe $(CDEBUG) $(WARN)
+            -Wformat -Wformat-nonliteral -Wformat-security -Wpacked \
+            -Wswitch -Wpadded \
+            -Wdisabled-optimization -mno-accumulate-outgoing-args -Wno-shadow \
+            -ansi -pedantic
+CFLAGS    = -march=i686 -pipe $(CDEBUG) $(WARN)
 LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0

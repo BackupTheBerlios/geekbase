@@ -15,7 +15,7 @@ blocklist_new(unsigned block_size, unsigned member_size)
 
 	first = block_new(block_size, 0);
 
-	XMALLOC(blocklist, temp, sizeof(blocklist), NULL);
+	XMALLOC(temp, sizeof(blocklist), NULL);
    	temp->member_size = member_size;
 	temp->block_size = block_size;
 	temp->first = first;

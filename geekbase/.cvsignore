@@ -4,3 +4,4 @@ html_docs
 libgeekdb.so*
 *~
 *.o
+cscope.out

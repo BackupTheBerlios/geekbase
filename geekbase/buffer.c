@@ -14,12 +14,12 @@ buffer_new (unsigned member_size, unsigned size)
 
 	assert(member_size != 0);
 
-	XMALLOC(buffer, temp, sizeof(buffer), NULL);
+	XMALLOC(temp, sizeof(buffer), NULL);
 	temp->member_size = member_size;
 	temp->used = 0;
 	temp->size = size;
 	if(size) {
-		XMALLOC(void, temp->buf, size * member_size, NULL);
+		XMALLOC(temp->buf, size * member_size, NULL);
 	}
 	else
 		temp->buf = NULL;
@@ -51,7 +51,7 @@ buffer_add(buffer *buff, void *data)
 	if (buff->used == buff->size) {
 		++buff->size;
 	}
-	XMALLOC(void, tmp_buf, buff->size * buff->member_size, -1);
+	XMALLOC(tmp_buf, buff->size * buff->member_size, -1);
 
 	if (buff->used > 0)
 		memcpy(tmp_buf, buff->buf, used_mem);
@@ -76,7 +76,7 @@ buffer_get(buffer *buff, unsigned index)
 		return NULL;
 	}
 
-	XMALLOC(void, tmp_buf, buff->member_size, NULL);
+	XMALLOC(tmp_buf, buff->member_size, NULL);
 	memcpy(tmp_buf, VOID_P (CHAR_P buff->buf + index * buff->member_size), buff->member_size);
 
 	return tmp_buf;
@@ -95,7 +95,7 @@ buffer_merge(buffer *dest, unsigned destpos, buffer *src, unsigned src_startpos,
 	/* if there's not enough memory in the destination buffer */
 	if (dest->size < destpos + n) {
 		/* allocate memory for the new contents */
-		XMALLOC(void, tmp_buf, dest->member_size * (destpos + n), -1);
+		XMALLOC(tmp_buf, dest->member_size * (destpos + n), -1);
 		/* if there's something to copy from the old buffer */
 		if (dest->used > 0) {
 			memcpy(tmp_buf, dest->buf, destpos * dest->member_size);
