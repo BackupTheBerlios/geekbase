@@ -10,7 +10,8 @@ CFLAGS    = -D_GNU_SOURCE -DDEBUG
 ifndef NODEBUG
 CFLAGS += $(CDEBUG) $(WARN)
 endif
-LDFLAGS   = -shared -fPIC -lncurses
+LDFLAGS   = -shared -fPIC
+LIBS	  = -lncurses
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
@@ -38,14 +39,14 @@ LIBDIR	= $(DESTDIR)/lib
 all: $(EXEC)
 
 $(EXEC): $(LIB) $(EXEC_OBJS)
-	$(CC) -L. -l$(LIBNAME) $(EXEC_OBJS) -o $@
+	$(CC) -L. $(LIBS) -l$(LIBNAME) $(EXEC_OBJS) -o $@
 
 $(LIB): $(LIB_OBJS)
-	$(CC) $(LDFLAGS) $^ -o $@
+	$(CC) $(LIBS) $(LDFLAGS) $^ -o $@
 	ln -sf $@ $(basename $@)
 
 test: $(LIB) $(TEST_OBJS)
-	$(CC) -L. -l$(LIBNAME) $(TEST_OBJS) -o g_test
+	$(CC) -L. $(LIBS) -l$(LIBNAME) $(TEST_OBJS) -o g_test
 
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 .%.d: %.c
