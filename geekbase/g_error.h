@@ -14,10 +14,12 @@ typedef enum {
 	ERR_WRONG_LOCATION,
 	ERR_OPEN_TABLE,
 	ERR_INVALID_TABLE,
-	ERR_INVALID_ARG
+	ERR_INVALID_ARG,
+	ERR_TERM_SIZE
 } err_type;
 
 void g_error(const char *msg);
 void set_error(err_type err);
+void lpr_error(const char *msg);
 
 #endif /* G_ERROR_H */

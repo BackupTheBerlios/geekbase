@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <curses.h>
 
 #include "g_error.h"
 
@@ -14,6 +15,7 @@ const char *g_errlist[] = {
 	"Could not open table",
 	"Table has wrong format or is incomplete",
 	"One or more arguments are not valid",
+	"Terminal size is too little!",
 	NULL
 };
 
@@ -28,4 +30,11 @@ void g_error(const char *msg)
 void set_error(err_type err)
 {
 	g_errno = err;
+}
+
+void lpr_error(const char *msg)
+{
+	endwin();
+	g_error(msg);
+	exit(1);
 }

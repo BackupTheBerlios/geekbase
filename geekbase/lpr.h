@@ -13,8 +13,6 @@
 /*#define NDEBUG */
 
 
-#include "lpr_error.h"
-
 #define A_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
 #endif /* LPR_H */

@@ -8,7 +8,7 @@
 enum G_EVENT {
 	FOCUS_M,
 	FOCUS_W,
-	LPR_EXIT,
+	LPR_EXIT
 };
 
 int menu_event(MENU *work , MENUPAN *lpr, MENUPAN *edita, 

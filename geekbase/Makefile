@@ -20,8 +20,8 @@ LIB_SOURCES   = block.c blocklist.c buffer.c db.c field.c g_error.c \
 LIB_OBJS      = $(LIB_SOURCES:.c=.o)
 
 EXEC          = geekbase
-EXEC_SOURCES  = events.c lpr_error.c lpr_screen.c main.c terminal.c \
-		wevents.c window.c workspace.c
+EXEC_SOURCES  = events.c lpr_screen.c main.c terminal.c wevents.c \
+		window.c workspace.c
 EXEC_OBJS     = $(EXEC_SOURCES:.c=.o)
 
 TEST          = g_test

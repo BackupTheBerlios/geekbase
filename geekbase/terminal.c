@@ -13,7 +13,9 @@ lpr_refresh(void)
 void
 termcontrol(void)
 {
-	if(LINES<24 || COLS<80) 
-		lpr_error(TERM_SIZE, "lpr_refresh");	
+	if(LINES<24 || COLS<80) {
+		set_error(ERR_TERM_SIZE);
+		lpr_error("lpr_refresh");
+	}
 }
 

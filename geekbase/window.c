@@ -1,4 +1,5 @@
 #include "window.h"
+#include "g_error.h"
 
 LPR_WINDOW*
 window_create(char *title, int sizey, int sizex, int id) 
@@ -9,8 +10,10 @@ window_create(char *title, int sizey, int sizex, int id)
 	assert(title);
 	
 	win=(LPR_WINDOW *)malloc(sizeof(LPR_WINDOW));
-	if(!win)
-		lpr_error(NO_MEM, "window_create");
+	if(!win) {
+		set_error(ERR_NOMEM);
+		lpr_error("window_create");
+	}
 
 	win->shad=new_panel(newwin(sizey, sizex,(LINES-sizey)/2+1, 
 				   (COLS-sizex)/2+1));

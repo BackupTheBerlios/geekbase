@@ -1,5 +1,5 @@
 #include "workspace.h"
-
+#include "g_error.h"
 
 MENU*
 menu_create(const char *choices[], const char *desc[], int nchoices)
@@ -10,8 +10,10 @@ menu_create(const char *choices[], const char *desc[], int nchoices)
    
 
 	items=(ITEM **)calloc(5+1, sizeof(ITEM *));
-	if(!items)
-		lpr_error(NO_MEM, "create_menu");
+	if(!items) {
+		set_error(ERR_NOMEM);
+		lpr_error("create_menu");
+	}
 
 	for(i=0; i<5; ++i) {
 		items[i]=new_item(choices[i], desc[i]);
@@ -35,8 +37,10 @@ menu_pan_create(MENU *menu, int y, int x, int id)
 	assert(menu);
 	
 	menupan=(MENUPAN *)malloc(sizeof(MENUPAN));
-	if(!menupan) 
-		lpr_error(NO_MEM, "menu_pan_create");
+	if(!menupan) {
+		set_error(ERR_NOMEM);
+		lpr_error("menu_pan_create");
+	}
 
 	menupan->id=id;
 	menupan->menu=menu;
