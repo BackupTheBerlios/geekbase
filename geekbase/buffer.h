@@ -52,4 +52,6 @@ void *buffer_get(buffer *buff, unsigned index);
  **/
 int buffer_merge(buffer *dest, unsigned destpos, buffer *src, unsigned src_startpos, unsigned n);
 
+buffer *buffer_del(buffer **buff, unsigned start, unsigned end);
+
 #endif /* BUFFER_H */

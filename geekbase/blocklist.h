@@ -9,7 +9,7 @@ typedef struct {
 	unsigned blocknum;     /**<  */
 	unsigned member_size;  /**<  */
 	unsigned block_size;   /**<  */
-	block *first;          /**<  */
+	block *head;           /**<  */
 } blocklist;
 
 /**
@@ -32,20 +32,24 @@ int blocklist_free(blocklist *morituro);
  * @param b The block to insert
  * @param where The block before block b will be inserted
  **/
-int blocklist_insert(blocklist *bl, block *b, block *where);
+int blocklist_insert_block(blocklist *bl, block *b, block *where);
 
 /**
  * @brief Append a block in the blocklist after the last block.
  * @param bl The blocklist
  * @param b The block to append
  **/
-int blocklist_append(blocklist *bl, block *b);
+int blocklist_append_block(blocklist *bl, block *b);
 
 /**
  * @brief Insert a block to the beginning of a blocklist.
  * @param bl The blocklist
  * @param b The block to insert
  **/
-int blocklist_pushf(blocklist *bl, block *b);
+int blocklist_pushf_block(blocklist *bl, block *b);
+
+void blocklist_append_elem(blocklist *bl, void *data);
+
+void *blocklist_get_elem(blocklist *bl, unsigned index);
 
 #endif /* BLOCKLIST_H */

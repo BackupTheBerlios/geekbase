@@ -92,6 +92,7 @@ table_load(const char *name)
 		free(fullname);
 
 		XMALLOC(tab, sizeof(table), NULL);
+		tab->records = blocklist_new(25, sizeof(record));
 
 		/* The number of fields */
 		ret = fscanf(file, "%d", &fieldnum);
@@ -111,14 +112,6 @@ table_load(const char *name)
 				return NULL;
 			} else {
 				list_append(flist, i, tmpf);
-#ifdef DEBUG
-				printf("%s: ", tmpf->name);
-				switch(tmpf->type) {
-				case TYPE_INT: printf("int\n"); break;
-				case TYPE_STRING: printf("string\n"); break;
-				case TYPE_TIMESTAMP: printf("timestamp\n"); break;
-				}
-#endif
 			}
 		}
 		tab->fields = flist;
@@ -132,21 +125,8 @@ table_load(const char *name)
 				free(tab->fields);
 				return NULL;
 			} else {
-				/* @todo append record to table */
-#ifdef DEBUG
-				for(i = 0; i < list_count_nodes(tab->fields); i++) {
-					switch(tmpr->values[i].type) {
-					case TYPE_INT:
-					case TYPE_TIMESTAMP:
-						printf("%d ", tmpr->values[i].val.v_int);
-						break;
-					case TYPE_STRING:
-						printf("%s ", tmpr->values[i].val.v_string);
-						break;
-					}
-				}
-				printf("\n");
-#endif
+				tmpr->parent = tab;
+				blocklist_append_elem(tab->records, (void*)tmpr);
 			}
 		}
 

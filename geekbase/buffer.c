@@ -114,3 +114,26 @@ buffer_merge(buffer *dest, unsigned destpos, buffer *src, unsigned src_startpos,
 
 	return 0;
 }
+
+buffer*
+buffer_del(buffer **buff, unsigned start, unsigned end)
+{
+	buffer *new, *old;
+
+	old = *buff;
+
+	assert(buff && old);
+	assert(start <= end);
+	assert(end < old->used );
+
+	new = buffer_new(old->member_size, old->size);
+	if(start > 0)
+		buffer_merge(new, 0, old, 0, start-1);
+	if(end < old->used-1)
+		buffer_merge(new, start, old, end+1, old->used-1);
+
+	buffer_free(old);
+	*buff = new;
+
+	return new;
+}

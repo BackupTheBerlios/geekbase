@@ -7,7 +7,8 @@
 
 extern unsigned g_errno;
 
-block *block_new(unsigned member_size, unsigned size)
+block*
+block_new(unsigned member_size, unsigned size)
 {
 	block *bl;
 
@@ -20,7 +21,8 @@ block *block_new(unsigned member_size, unsigned size)
 	return bl;
 }
 
-void block_free(block *morituro) 
+void
+block_free(block *morituro) 
 {
 	assert(morituro);
 

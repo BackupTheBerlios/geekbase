@@ -5,7 +5,7 @@
 
 void lpr_refresh(void);
 
-main()
+int main()
 {
 	MENU *workspace;
 	MENUPAN *menulpr;

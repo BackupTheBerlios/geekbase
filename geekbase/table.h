@@ -4,6 +4,7 @@
 #include "enums.h"
 #include "g_limits.h"
 #include "list.h"
+#include "blocklist.h"
 
 typedef union {
 	int v_int;
@@ -23,6 +24,7 @@ typedef struct {
 typedef struct {
 	char *name;    /**< The table's name */
 	list *fields;  /**< Array of the fields it contains */
+	blocklist *records;
 } table;
 
 table *table_open(const char *name);
