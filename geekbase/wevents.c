@@ -382,4 +382,3 @@ editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 	
 	return g_event;
 }
-
