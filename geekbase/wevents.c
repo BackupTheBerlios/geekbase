@@ -12,7 +12,7 @@ int insrec_wevent(LPR_WINDOW *curwin, int key, table *tab);
 
 
 int
-window_event(LPR_WINDOW *curwindow, table *tab)
+window_event(LPR_WINDOW *curwindow,table *tab)
 {
 	int i = 1;
 	int item;
@@ -144,7 +144,7 @@ insrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 {
 	int g_event=FOCUS_W;
 	record *rec=NULL;
-	int i=0, dummy;
+	int i=-1, dummy;
 	char *str;
 	
 	switch(key) {
@@ -209,8 +209,6 @@ insrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 			rec->values[1].val.v_int= dummy;
 			
 		else {
-			mvprintw(LINES-3, 1 ,
-				  "GIORNO NON VALIDO O\n CAMPI NON COMPLETI");
 			beep();
 			flash();
 			break;
@@ -224,43 +222,49 @@ insrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
 		dummy = hour(atoi(field_buffer(curwin->field[1],
 					       0)),
 			     atoi(field_buffer(curwin->field[2],
-					       0)), tab);
+					       0)),tab, rec);
 		if(dummy == 0) {
 			rec->values[2].type = TYPE_INT;
-			rec->values[2].val.v_int = 1;
-	/* 			atoi(field_buffer(curwin->field[1],0)); */
+			rec->values[2].val.v_int = 
+	 			atoi(field_buffer(curwin->field[1],0)); 
 			
 			rec->values[3].type = TYPE_INT;
-			rec->values[3].val.v_int = 2;
-		/* 		atoi(field_buffer(curwin->field[2],0)); */
+			rec->values[3].val.v_int = 
+		 		atoi(field_buffer(curwin->field[2],0)); 
 
 		} else {
-			mvprintw(LINES-4, 1,
-				 "INTERVALLO ORARIO NON VALIDO");
+
 			beep();
 			flash();
+			break;
 		}
 	   
 		
 		/* Aula */	       
 		rec->values[4].type = TYPE_STRING;
-		rec->values[4].val.v_string = malloc(strlen("T8"));
-		strcpy(rec->values[4].val.v_string, "T8");
-	/* 		strndup(field_buffer(curwin->field[3], 0), 2); */
+		rec->values[4].val.v_string = 
+	 		strndup(field_buffer(curwin->field[3], 0), 2); 
 		/* Materia */ 
 		rec->values[5].type = TYPE_STRING;
-		rec->values[5].val.v_string = malloc(strlen("Lipparini"));
-		strcpy(rec->values[5].val.v_string, "Lipparini");
-/* 			strndup(field_buffer(curwin->field[4], 0), 12); */
+		rec->values[5].val.v_string = 
+			strndup(field_buffer(curwin->field[4], 0), 12); 
 		/* Docente */
 		rec->values[6].type = TYPE_STRING;
-		rec->values[6].val.v_string = malloc(strlen("Lipparini"));
-		strcpy(rec->values[6].val.v_string, "Lipparini");
-/* 			strndup(field_buffer(curwin->field[5], 0), 12); */
-
-		blocklist_append_elem(tab->records, (void*)rec);
-		table_save(tab);
+		rec->values[6].val.v_string = 
+ 			strndup(field_buffer(curwin->field[5], 0), 12); 
 		
+		
+		if(rec->values[1].val.v_int ||
+		   rec->values[2].val.v_int)
+			
+			
+			
+		
+		blocklist_append_elem(tab->records, (void*)rec);
+	       
+			
+		table_save(tab);
+		hide_window(curwin);
 		break;
 	default:
 		form_driver(curwin->form, key);
@@ -335,3 +339,48 @@ hour(int start, int end, table *tab, record *rec)
 
 	return 0;
 }
+
+
+int
+editrec_wevent(LPR_WINDOW *curwin, int key, table *tab)
+{
+	int g_event=FOCUS_W;
+	record *rec=NULL;
+	int i=-1, dummy;
+	char *str;
+	
+	switch(key) {
+	case KEY_UP:		
+		if(curwin->form->current == curwin->field[1])
+			form_driver(curwin->form, REQ_LEFT_FIELD);
+		else form_driver(curwin->form, REQ_UP_FIELD);
+		break;
+	case KEY_DOWN:
+		if(curwin->form->current == curwin->field[1]){
+			form_driver(curwin->form, REQ_RIGHT_FIELD);
+		}
+		else {
+			form_driver(curwin->form, REQ_DOWN_FIELD);
+		}
+		      
+		break;
+	case KEY_LEFT:
+		form_driver(curwin->form, REQ_LEFT_CHAR);
+		break;
+	case KEY_RIGHT:
+		form_driver(curwin->form, REQ_RIGHT_CHAR);
+		break;
+	      
+	case KEY_DC:
+		form_driver(curwin->form, REQ_DEL_CHAR);
+		break;	
+	case KEY_BACKSPACE:
+		form_driver(curwin->form, REQ_LEFT_CHAR);
+		form_driver(curwin->form, REQ_DEL_CHAR);
+		break;
+	case 10:
+		if(curwin->form->current != curwin->field[6])
+			break;
+	}
+}
+

@@ -114,8 +114,6 @@ LPR_WINDOW*
 winsrec_create(void)
 {
 	LPR_WINDOW *win;
-    
-	FIELD *field[5];
 	int i;
 		
 
@@ -132,7 +130,7 @@ winsrec_create(void)
 	win->field[4]=new_field(1, 12, 3, 13, 0, 1); /* materia */	
  	set_field_type(win->field[2], TYPE_ALPHA, 1); 
 	win->field[5]=new_field(1, 12, 4, 13, 0, 1); /* docente */
- 	set_field_type(win->field[2], TYPE_ALNUM, 1); 
+ 	set_field_type(win->field[2], TYPE_ALPHA, 1); 
 	win->field[6]=new_field(1, 2, 6, 12, 0, 1);
 	win->field[7]=NULL;
 	
@@ -142,7 +140,7 @@ winsrec_create(void)
 		set_field_fore(win->field[i], 
 			       COLOR_PAIR(1) | A_UNDERLINE);
 		set_field_back(win->field[i], COLOR_PAIR(1)| A_UNDERLINE);
-			field_opts_off(win->field[i], O_AUTOSKIP );
+		field_opts_off(win->field[i], O_AUTOSKIP );
 	}
 
 	win->form=new_form(win->field);
@@ -165,44 +163,52 @@ winsrec_create(void)
 LPR_WINDOW*
 weditrec_create(void)
 {
+      
 	LPR_WINDOW *win;
-    
-	FIELD *field[6];
 	int i;
 		
 
 	win=window_create("Edita Record", 11, 28, 2);
 
-	field[6]=new_field(1, 8, 0, 13 ,5, 0); 
-	field[0]=new_field(1, 8, 1, 13 ,5, 0); 
-	field[1]=new_field(1, 2, 2, 13, 5, 0);
-	field[2]=new_field(1, 2, 2, 16, 5, 0);
-	field[3]=new_field(1, 2, 3, 13, 5, 0);
-	field[4]=new_field(1, 12, 4, 13, 5, 0);	
-	field[5]=new_field(1, 12, 5, 13, 5, 0);	
-	field[7]=NULL;
-
-	for(i=0; i<=6; ++i) {
-		set_field_fore(field[i], 
-			       COLOR_PAIR(1) | A_REVERSE | A_UNDERLINE);
-		set_field_back(field[i], COLOR_PAIR(1)| A_UNDERLINE);
+ 	win->field[0]=new_field(1, 2, 0, 13, 0, 0); /* id */
+	set_field_type(win->field[0], TYPE_INTEGER, 1); 
+	win->field[1]=new_field(1, 9, 1, 13 ,0, 0); /* giorno */ 
+	set_field_type(win->field[1], TYPE_ALPHA, 6); 
+	win->field[2]=new_field(1, 2, 2, 13, 0, 0); /* da */
+	set_field_type(win->field[2], TYPE_INTEGER, 1); 
+	win->field[3]=new_field(1, 2, 2, 19, 0, 0); /* a */
+	set_field_type(win->field[3], TYPE_INTEGER, 1); 
+	win->field[4]=new_field(1, 2, 3, 13, 0, 1); /* aula */
+ 	set_field_type(win->field[4], TYPE_ALNUM, 1); 
+	win->field[5]=new_field(1, 12, 4, 13, 0, 1); /* materia */	
+ 	set_field_type(win->field[5], TYPE_ALPHA, 1); 
+	win->field[6]=new_field(1, 12, 5, 13, 0, 1); /* docente */
+ 	set_field_type(win->field[6], TYPE_ALPHA, 1); 
+	win->field[7]=new_field(1, 2, 8, 12, 0, 1);
+	win->field[8]=NULL;
+	
+	set_field_buffer(win->field[7], 0, "OK");
+	field_opts_off(win->field[7], O_EDIT );
+	for(i=0; i<=7; ++i) {
+		set_field_fore(win->field[i], 
+			       COLOR_PAIR(1) | A_UNDERLINE);
+		set_field_back(win->field[i], COLOR_PAIR(1)| A_UNDERLINE);
+		field_opts_off(win->field[i], O_AUTOSKIP );
 	}
 
-	win->form=new_form(field);
+	win->form=new_form(win->field);
 
 	set_form_win(win->form, win->body->win);
 	set_form_sub(win->form, derwin(win->body->win, 9, 26, 1, 1));
 
         post_form(win->form); 
-
-	mvwprintw(win->body->win, 1,  1, "Id Record:");
+	mvwprintw(win->body->win, 1 , 1, "Id:");
 	mvwprintw(win->body->win, 2 , 1, "Giorno:");
-	mvwprintw(win->body->win, 3 , 1, "Orario: da");
-	mvwprintw(win->body->win, 3 , 4, "a:");
-	mvwprintw(win->body->win, 4 , 1, "Aula:");
-	mvwprintw(win->body->win, 5 , 1, "Materia:");
-	mvwprintw(win->body->win, 6 , 1, "Docente:");
-	mvwprintw(win->body->win, 9 , 1, "[INVIO] per modificare");
+	mvwprintw(win->body->win, 3 , 1, "Orario da:");
+	mvwprintw(win->body->win, 4 , 17, "a:");
+	mvwprintw(win->body->win, 5 , 1, "Aula:");
+	mvwprintw(win->body->win, 6 , 1, "Materia:");
+	mvwprintw(win->body->win, 7 , 1, "Docente:");
 		
 	return win;
 }
