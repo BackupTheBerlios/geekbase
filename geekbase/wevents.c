@@ -5,7 +5,7 @@
 #include "workspace.h"
 
 int
-window_event (LPR_WINDOW *curwindow, table *tab)
+window_event(LPR_WINDOW *curwindow, table *tab)
 {
 	int i = 1;
 	int item;
@@ -88,7 +88,7 @@ shortcut (LPR_WINDOW * curwindow)
 
 
 void
-open_window (int id, LPR_WINDOW * curwin)
+open_window (int id, LPR_WINDOW *curwin)
 {
 	LPR_WINDOW *dummy;
 	int i;
@@ -119,13 +119,13 @@ open_window (int id, LPR_WINDOW * curwin)
 }
 
 int 
-wevent(LPR_WINDOW *curwin, int key)
+wevent(LPR_WINDOW *curwin, int key, table *tab)
 {
 	int g_event=FOCUS_W;
 
 	switch(curwin->id) {
 		case 1:
-			g_event = insrec_wevent(curwin, key);
+			g_event = insrec_wevent(curwin, key, tab);
 	}
 		
 	return g_event;
