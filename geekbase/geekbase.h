@@ -13,10 +13,10 @@ typedef struct {
 } env;
 
 typedef struct {
-	char *name;
-	short unsigned ntable;
-	struct env *parent;
-	struct table **table;
+	char *name;             /**<  */
+	short unsigned ntable;  /**<  */
+	struct env *parent;     /**<  */
+	struct table **table;   /**<  */
 } db;
 
 #endif /* GEEKBASE_H */

@@ -42,7 +42,7 @@ blocklist_free(blocklist *morituro)
 }
 
 int
-blocklist_block_insert(blocklist *bl, block *b, block *where)
+blocklist_insert(blocklist *bl, block *b, block *where)
 { 
 	block *before;
 
@@ -67,7 +67,7 @@ blocklist_block_insert(blocklist *bl, block *b, block *where)
 }
 
 int
-blocklist_block_append(blocklist *bl, block *b)
+blocklist_append(blocklist *bl, block *b)
 {
 	block *tmp;
 	block *last;
@@ -87,7 +87,7 @@ blocklist_block_append(blocklist *bl, block *b)
 }
 
 int
-blocklist_block_first(blocklist *bl, block *b)
+blocklist_pushf(blocklist *bl, block *b)
 {
 	assert(bl && b);
 

@@ -17,13 +17,13 @@ typedef struct {
  * @param type Field type
  * @param length The length of the field
  * @return A pointer to the field just created
- */
+ **/
 field *field_create(char *name, int type, short unsigned length);
 
 /**
  * @brief Frees a field.
  * @param morituro The field to kill
- */
+ **/
 void field_free(field *morituro);
 
 /**
@@ -32,7 +32,7 @@ void field_free(field *morituro);
  * @param name
  * @param length
  * @return 0 if all ok, otherwise -1
- */
+ **/
 int field_edit(field *fl, char *name, short unsigned length);
 
 #endif /* FIELD_H */

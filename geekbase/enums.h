@@ -5,6 +5,6 @@ enum field_type {
 	TYPE_TIMESTAMP  /**< field is a timestamp (xx:yy:zz) collector */
 };
 
-enum env_type {
-	TYPE_DISK  /**<  */
-};
+/* enum env_type { */
+/* 	TYPE_DISK  /\**<  *\/ */
+/* }; */

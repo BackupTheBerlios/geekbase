@@ -1,7 +1,7 @@
 #include "field.h"
 #include "utils.h"
 
-field *
+field*
 field_create(char *name, int field_type, short unsigned lenght)
 {
 	field *temp;

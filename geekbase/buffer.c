@@ -27,7 +27,8 @@ buffer_new (unsigned member_size, unsigned size)
 	return temp;
 }
 
-void buffer_free (buffer *buff)
+void
+buffer_free (buffer *buff)
 {
 	assert(buff);
 

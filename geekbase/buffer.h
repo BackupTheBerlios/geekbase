@@ -5,10 +5,10 @@
 
 /** @brief A simple buffer */
 typedef struct {
-	void *buf;          /**< The memory zone occupied by the buffer */
-	unsigned used;      /**< The number of objects in the buffer */
-	unsigned size;        /**< The maximum number of objects that fit into the buffer */
-	unsigned member_size; /**< The size of the objects in the buffer */
+	void *buf;             /**< The memory zone occupied by the buffer */
+	unsigned used;         /**< The number of objects in the buffer */
+	unsigned size;         /**< The maximum number of objects that fit into the buffer */
+	unsigned member_size;  /**< The size of the objects in the buffer */
 } buffer;
 
 /**
@@ -33,6 +33,12 @@ void buffer_free(buffer *buff);
  **/
 int buffer_add(buffer *buff, void *data);
 
+/**
+ * @brief Get a copy of an element in a buffer
+ * param buff The source buffer
+ * param index The index of the element
+ * return A pointer to a newly allocated element
+ **/
 void *buffer_get(buffer *buff, unsigned index);
 
 /**

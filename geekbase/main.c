@@ -3,7 +3,7 @@
 #include "geekbase.h"
 #include "buffer.h"
 
-int main()
+int main(/*int argc, char **argv*/)
 {
 	unsigned i;
 	int *p;
