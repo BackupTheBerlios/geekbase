@@ -14,15 +14,20 @@ LDFLAGS   = -shared -fPIC
 
 LIB           = libgeekdb.so.0
 LIBNAME       = $(subst lib,,$(basename $(basename $(LIB))))
-LIB_SOURCES   = block.c blocklist.c buffer.c cell.c db.c field.c g_error.c table.c
+LIB_SOURCES   = block.c blocklist.c buffer.c cell.c db.c field.c g_error.c \
+		g_limits.c list.c table.c
 LIB_OBJS      = $(LIB_SOURCES:.c=.o)
 
 EXEC          = geekbase
 EXEC_SOURCES  = main.c
 EXEC_OBJS     = $(EXEC_SOURCES:.c=.o)
 
-SOURCES       = $(LIB_SOURCES) $(EXEC_SOURCES)
-OBJS          = $(LIB_OBJS) $(EXEC_OBJS)
+TEST          = test
+TEST_SOURCES  = test.c
+TEST_OBJS     = $(TEST_SOURCES:.c=.o)
+
+SOURCES       = $(LIB_SOURCES) $(EXEC_SOURCES) $(TEST_SOURCES)
+OBJS          = $(LIB_OBJS) $(EXEC_OBJS) $(TEST_OBJS)
 
 DEPS          = $(addprefix .,$(SOURCES:.c=.d))
 
@@ -39,6 +44,9 @@ $(LIB): $(LIB_OBJS)
 	$(CC) $(LDFLAGS) $^ -o $@
 	ln -sf $@ $(basename $@)
 
+test: $(LIB) $(TEST_OBJS)
+	$(CC) -L. -l$(LIBNAME) $(TEST_OBJS) -o $@
+
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 .%.d: %.c
 	echo Generating dependencies for $< ...
@@ -52,7 +60,9 @@ endif
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(DEPS)
-	$(RM) $(LIB) $(basename $(LIB)) $(EXEC)
+	$(RM) $(LIB) $(basename $(LIB))
+	$(RM) $(EXEC)
+	$(RM) $(TEST)
 
 install: all
 	mkdir -p $(BINDIR) $(LIBDIR)

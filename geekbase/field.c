@@ -1,16 +1,26 @@
+#include <string.h>
+
 #include "field.h"
 #include "utils.h"
+#include "g_limits.h"
 
 field*
-field_create(char *name, int field_type, short unsigned lenght)
+field_create(char *name, field_type type)
 {
 	field *temp;
       
 	XMALLOC(temp, sizeof(field), NULL); 
 
-	temp->name=name;
-	temp->type=field_type;
-	temp->lenght=lenght;
+	if(strnlen(name, MAX_FIELDNAME_LEN) > MAX_FIELDNAME_LEN) {
+		set_error(ERR_INVALID_ARG);
+		free(temp);
+		return NULL;
+	} else {
+		strcpy(temp->name, name);
+	}
+	temp->name = name;
+	temp->type = type;
+	temp->parent = NULL;
 
 	return temp;
 }
@@ -18,22 +28,8 @@ field_create(char *name, int field_type, short unsigned lenght)
 void
 field_free(field *morituro)
 {
-	if(!morituro)
-		return;
+	assert(morituro && morituro->name);
+
+	free(morituro->name);
 	free(morituro); 
-}
-
-/**
- * Note: it's impossible to edit field type.
- * This because we can't convert points from a type to another.
- */
-int
-field_edit(field *fl, char *name, short unsigned lenght)
-{
-	if(!fl)
-		return -1;
-	fl->name=name;
-	fl->lenght=lenght;
-
-	return 0;
 }

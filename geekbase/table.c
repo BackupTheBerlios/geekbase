@@ -3,20 +3,20 @@
 #include "table.h"
 #include "db.h"
 #include "g_error.h"
+#include "g_limits.h"
 #include "utils.h"
 
 table*
-table_open(const char *name, unsigned mode)
+table_open(const char *name)
 {
 	table *tab;
 
 	assert(name);
 
-	if(!db_exists(name)) {
+	if(!table_is_open(name)) {
 		XMALLOC(tab, sizeof(table), NULL);
 		XMALLOC(tab->name, strlen(name), NULL);
 		strcpy(tab->name, name);
-		tab->parent = NULL;
 		return tab;
 	} else {
 		g_errno = ERR_TABLE_EXISTS;
@@ -24,8 +24,16 @@ table_open(const char *name, unsigned mode)
 	}
 }
 
+/* @todo da implamentare */
 int
 table_delete(const table *tab)
 {
 	return 0;
+}
+
+/* @todo da implementare */
+bool
+table_is_open(const char *name)
+{
+	return false;
 }

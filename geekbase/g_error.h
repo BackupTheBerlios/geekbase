@@ -11,9 +11,13 @@ typedef enum {
 	ERR_NOMEM,
 	ERR_ARRAY_OUT_OF_BOUNDS,
 	ERR_TABLE_EXISTS,
-	ERR_WRONG_LOCATION
+	ERR_WRONG_LOCATION,
+	ERR_OPEN_TABLE,
+	ERR_INVALID_TABLE,
+	ERR_INVALID_ARG
 } err_type;
 
 void g_error(const char *msg);
+void set_error(err_type err);
 
 #endif /* G_ERROR_H */

@@ -5,10 +5,9 @@
 #include "g_error.h"
 
 typedef struct {
-	char *name;                  /**<  */
-	field_type type;             /**<  */
-	unsigned lenght;             /**<  */
-	const struct table *parent;  /**<  */
+	char *name;            /**<  */
+	field_type type;       /**<  */
+	struct table *parent;  /**<  */
 } field;
 
 /**
@@ -18,21 +17,12 @@ typedef struct {
  * @param length The length of the field
  * @return A pointer to the field just created
  **/
-field *field_create(char *name, int type, short unsigned length);
+field *field_create(char *name, field_type type);
 
 /**
  * @brief Frees a field.
  * @param morituro The field to kill
  **/
 void field_free(field *morituro);
-
-/**
- * @brief Edits field.
- * @param fl The field to edit
- * @param name
- * @param length
- * @return 0 if all ok, otherwise -1
- **/
-int field_edit(field *fl, char *name, short unsigned length);
 
 #endif /* FIELD_H */
